@@ -15,7 +15,15 @@ function updateConnectionBadge() {
 
 window.addEventListener('online', updateConnectionBadge);
 window.addEventListener('offline', updateConnectionBadge);
-window.addEventListener('DOMContentLoaded', updateConnectionBadge);
+window.addEventListener('DOMContentLoaded', updateConnectionBadge); 
+window.addEventListener('online', () => {
+  updateConnectionBadge();
+  const toast = document.getElementById('sync-toast');
+  if (toast) {
+    toast.style.display = 'block';
+    setTimeout(() => toast.style.display = 'none', 3000);
+  }
+});
 // ─── Register Service Worker ──────────────────────────
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
