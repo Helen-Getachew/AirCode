@@ -1,5 +1,21 @@
 // app.js — entry point, starts the app
+// ─── Connection Status Badge ──────────────────────────
+function updateConnectionBadge() {
+  const badge = document.getElementById('connection-badge');
+  if (!badge) return;
 
+  if (navigator.onLine) {
+    badge.style.display = 'none';
+  } else {
+    badge.style.display = 'block';
+    badge.style.background = '#7c3aed';
+    badge.textContent = '📴 Offline — AirCode still works fully';
+  }
+}
+
+window.addEventListener('online', updateConnectionBadge);
+window.addEventListener('offline', updateConnectionBadge);
+window.addEventListener('DOMContentLoaded', updateConnectionBadge);
 // ─── Register Service Worker ──────────────────────────
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
