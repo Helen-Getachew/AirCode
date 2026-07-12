@@ -50,6 +50,23 @@
           </div>
           <button id="theme-toggle" class="icon-btn">☀️</button>
         </header>
+
+        <!-- Stats bar: streak, level, trace accuracy -->
+        <div id="stats-bar" style="display:flex;gap:10px;padding:10px 16px;background:var(--surface2)">
+          <div style="flex:1;text-align:center">
+            <div style="font-size:18px;font-weight:700;color:var(--accent)" id="stat-streak">🔥 0</div>
+            <div style="font-size:10px;color:var(--text-muted)">day streak</div>
+          </div>
+          <div style="flex:1;text-align:center">
+            <div style="font-size:18px;font-weight:700;color:var(--accent)" id="stat-level">Lv 1</div>
+            <div style="font-size:10px;color:var(--text-muted)">level</div>
+          </div>
+          <div style="flex:1;text-align:center">
+            <div style="font-size:18px;font-weight:700;color:var(--accent)" id="stat-trace">–</div>
+            <div style="font-size:10px;color:var(--text-muted)">trace accuracy</div>
+          </div>
+        </div>
+
         <div id="subject-list"></div>
       </div>
 
