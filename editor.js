@@ -273,13 +273,15 @@ function showTraceComparison(prediction, actual) {
 
   if (isMatch) {
     noteEl.style.color = 'var(--success)';
-    noteEl.textContent = '✅ Your trace matched. You predicted this correctly.';
+    noteEl.textContent = '✅ Your trace matched! +10 XP';
   } else {
     noteEl.style.color = 'var(--accent2)';
     noteEl.textContent = '🔍 Not a match yet — look at where your prediction and the real output differ. That gap is usually where the bug or misunderstanding is.';
   }
 
   box.style.display = 'block';
+  recordTraceResult(isMatch);
+  if (typeof updateStatsBar === 'function') updateStatsBar();
 }
 
 // ─── Run HTML ─────────────────────────────────────────
