@@ -119,41 +119,59 @@ function clearSession() {
   return dbDelete(STORES.SESSION, 'currentUser');
 }
 
-// ─── Progress Functions ───────────────────────────────
+// ─── Current User Helper ───────────────────────────────
+function getCurrentUserEmail() {
+  return getSession().then(session => (session ? session.email : null));
+}
+
+// ─── Progress Functions (scoped per logged-in user) ────
 function saveProgress(subject, level, lessonId, data) {
-  const id = `${subject}-${level}-${lessonId}`;
-  return dbSet(STORES.PROGRESS, { id, subject, level, lessonId, ...data });
+  return getCurrentUserEmail().then(email => {
+    const id = `${email}::${subject}-${level}-${lessonId}`;
+    return dbSet(STORES.PROGRESS, { id, email, subject, level, lessonId, ...data });
+  });
 }
 
 function getProgress(subject, level, lessonId) {
-  const id = `${subject}-${level}-${lessonId}`;
-  return dbGet(STORES.PROGRESS, id);
+  return getCurrentUserEmail().then(email => {
+    const id = `${email}::${subject}-${level}-${lessonId}`;
+    return dbGet(STORES.PROGRESS, id);
+  });
 }
 
 function getAllProgress() {
-  return dbGetAll(STORES.PROGRESS);
+  return getCurrentUserEmail().then(email =>
+    dbGetAll(STORES.PROGRESS).then(all => all.filter(p => p.email === email))
+  );
 }
 
 function saveExamResult(subject, level, data) {
-  const id = `exam-${subject}-${level}`;
-  return dbSet(STORES.PROGRESS, { id, subject, level, type: 'exam', ...data });
+  return getCurrentUserEmail().then(email => {
+    const id = `${email}::exam-${subject}-${level}`;
+    return dbSet(STORES.PROGRESS, { id, email, subject, level, type: 'exam', ...data });
+  });
 }
 
 function getExamResult(subject, level) {
-  const id = `exam-${subject}-${level}`;
-  return dbGet(STORES.PROGRESS, id);
+  return getCurrentUserEmail().then(email => {
+    const id = `${email}::exam-${subject}-${level}`;
+    return dbGet(STORES.PROGRESS, id);
+  });
 }
 
-// ─── Stats Functions (streak, XP, trace accuracy) ─────
+// ─── Stats Functions (streak, XP, trace accuracy — scoped per user) ─
 function getStats() {
-  return dbGet(STORES.STATS, 'user-stats').then(stats => stats || {
-    key: 'user-stats',
-    xp: 0,
-    level: 1,
-    streak: 0,
-    lastActiveDate: null,
-    traceCorrect: 0,
-    traceTotal: 0
+  return getCurrentUserEmail().then(email => {
+    const key = `stats::${email}`;
+    return dbGet(STORES.STATS, key).then(stats => stats || {
+      key,
+      xp: 0,
+      level: 1,
+      streak: 0,
+      lastActiveDate: null,
+      traceCorrect: 0,
+      traceTotal: 0
+    });
   });
 }
 
