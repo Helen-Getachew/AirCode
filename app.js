@@ -15,6 +15,7 @@ window.addEventListener('DOMContentLoaded', () => {
   // Check for existing session
   getSession().then(session => {
     if (session) {
+      updateStreak();
       navigateTo('home');
     } else {
       navigateTo('login');
