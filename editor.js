@@ -200,6 +200,13 @@ function renderEditor(options = {}) {
     const code = document.getElementById('code-editor').value.trim();
     if (!code) return;
     const prediction = document.getElementById('trace-prediction').value.trim();
+
+    // Gentle nudge, not a hard block — keeps the flow honest to the tracing method
+    if (!prediction) {
+      const runAnyway = confirm("You haven't traced a prediction yet. Run anyway without predicting?");
+      if (!runAnyway) return;
+    }
+
     runCode(currentLang, code, challenge, prediction);
   });
 
@@ -404,7 +411,10 @@ function runPython(code, challenge, prediction) {
     }
     showTraceComparison(prediction, output.trim());
   }).catch(err => {
-    consoleEl.innerHTML = `<span style="color:var(--error)">Error: ${escapeHtml(err.toString())}</span>`;
+    consoleEl.innerHTML = `<div style="color:var(--error);font-family:'Courier New',monospace;
+      font-size:13px;padding:8px;background:rgba(248,113,113,0.1);border-radius:6px;white-space:pre-wrap">
+      ⚠️ ${escapeHtml(err.toString())}
+    </div>`;
   });
 }
 
