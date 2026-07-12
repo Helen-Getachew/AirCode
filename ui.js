@@ -38,10 +38,28 @@ function updateToggleLabels() {
   });
 }
 // ─── Home Screen ──────────────────────────────────────
+function updateStatsBar() {
+  if (typeof getStats !== 'function') return;
+  getStats().then(stats => {
+    const streakEl = document.getElementById('stat-streak');
+    const levelEl = document.getElementById('stat-level');
+    const traceEl = document.getElementById('stat-trace');
+    if (streakEl) streakEl.textContent = `🔥 ${stats.streak}`;
+    if (levelEl) levelEl.textContent = `Lv ${stats.level}`;
+    if (traceEl) {
+      traceEl.textContent = stats.traceTotal > 0
+        ? Math.round((stats.traceCorrect / stats.traceTotal) * 100) + '%'
+        : '–';
+    }
+  });
+}
+
 function renderHome() {
   const container = document.getElementById('subject-list');
   if (!container) return;
   container.innerHTML = '';
+
+  updateStatsBar();
 
   const themeBtn = document.getElementById('theme-toggle');
   if (themeBtn) themeBtn.onclick = toggleTheme;
@@ -642,7 +660,7 @@ function renderPractice() {
       color: '#3572A5',
       bg: 'rgba(53,114,165,0.12)',
       border: 'rgba(53,114,165,0.3)',
-      starter: '# Write your Python here\n\ndef greet(name):\n    return f"Hello, {name}!"\n\nprint(greet("World"))\nprint(greet("Trace Code"))',
+      starter: '# Write your Python here\n\ndef greet(name):\n    return f"Hello, {name}!"\n\nprint(greet("World"))\nprint(greet("AirCode"))',
       svg: `<svg viewBox="0 0 256 255" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
         <path d="M126 0C60 0 64 28 64 28v29h63v9H40S0 62 0 128s35 64 35 64h21V175s-1-35 34-35h61s33 1 33-32V34S159 0 126 0zm-13 19c7 0 12 5 12 12s-5 12-12 12-12-5-12-12 5-12 12-12z" fill="#3572A5"/>
         <path d="M130 255c66 0 62-28 62-28v-29h-63v-9h87s40 4 40-62-35-64-35-64h-21v17s1 35-34 35H105s-33-1-33 32v53s-5 55 58 55zm13-19c-7 0-12-5-12-12s5-12 12-12 12 5 12 12-5 12-12 12z" fill="#ffd43b"/>
