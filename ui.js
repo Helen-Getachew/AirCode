@@ -505,6 +505,38 @@ function renderExercise(quiz, container, subjectId, level, lessonId, lessons, cu
   });
 }
 
+// ─── Show "Next Lesson" Button ─────────────────────────
+function showNextButton(container, subjectId, level, lessonId, lessons, currentIndex) {
+  // Avoid stacking duplicate buttons if this runs more than once
+  const existing = container.querySelector('#btn-next-lesson');
+  if (existing) existing.remove();
+
+  const nextLesson = lessons[currentIndex + 1];
+
+  const btn = document.createElement('button');
+  btn.id = 'btn-next-lesson';
+  btn.className = 'btn-primary';
+  btn.style.cssText = 'width:100%;margin-top:16px;padding:14px;';
+
+  if (nextLesson) {
+    btn.textContent = `Next: ${nextLesson.title} →`;
+    btn.addEventListener('click', () => {
+      navigateTo('lesson', {
+        subject: subjectId,
+        level,
+        lessonId: nextLesson.id
+      });
+    });
+  } else {
+    btn.textContent = '✓ All lessons complete — Take the exam';
+    btn.addEventListener('click', () => {
+      navigateTo('exam', { subject: subjectId, level });
+    });
+  }
+
+  container.appendChild(btn);
+}
+
 // ─── Exam Screen ──────────────────────────────────────
 function renderExam(subjectId, level) {
   const questions = getExam(subjectId, level);
