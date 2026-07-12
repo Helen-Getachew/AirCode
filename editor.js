@@ -42,6 +42,14 @@ function renderEditor(options = {}) {
       </div>
       <p style="font-size:14px;color:var(--text);line-height:1.5">${challenge.instruction}</p>
       ${challenge.expected ? `<div style="margin-top:8px;font-size:12px;color:var(--text-muted)">Expected output: <code style="color:var(--accent);background:var(--surface2);padding:2px 6px;border-radius:4px">${challenge.expected}</code></div>` : ''}
+      ${challenge.hints && challenge.hints.length ? `
+      <div style="margin-top:10px">
+        <button id="btn-hint" style="padding:6px 12px;background:var(--surface2);color:var(--accent);
+          border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600">
+          💡 Get a hint
+        </button>
+        <div id="hint-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px"></div>
+      </div>` : ''}
     </div>` : ''}
 
     <!-- Editor Area -->
@@ -209,6 +217,32 @@ function renderEditor(options = {}) {
 
     runCode(currentLang, code, challenge, prediction);
   });
+
+  // ─── Hint Button (progressive reveal, no AI model needed) ─
+  if (challenge && challenge.hints && challenge.hints.length) {
+    let hintsShown = 0;
+    const hintBtn = document.getElementById('btn-hint');
+    const hintList = document.getElementById('hint-list');
+
+    hintBtn.addEventListener('click', () => {
+      if (hintsShown >= challenge.hints.length) return;
+
+      const hintEl = document.createElement('div');
+      hintEl.style.cssText = `padding:8px 10px;background:var(--surface2);border-left:3px solid var(--accent);
+        border-radius:6px;font-size:13px;color:var(--text);line-height:1.4`;
+      hintEl.textContent = `Hint ${hintsShown + 1}: ${challenge.hints[hintsShown]}`;
+      hintList.appendChild(hintEl);
+
+      hintsShown++;
+      if (hintsShown >= challenge.hints.length) {
+        hintBtn.textContent = '💡 No more hints';
+        hintBtn.disabled = true;
+        hintBtn.style.opacity = '0.5';
+      } else {
+        hintBtn.textContent = `💡 Get another hint (${challenge.hints.length - hintsShown} left)`;
+      }
+    });
+  }
 
   // ─── Back Button ──────────────────────────────────────
   document.getElementById('btn-back-editor').addEventListener('click', () => {
