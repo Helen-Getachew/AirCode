@@ -1,12 +1,13 @@
 // db.js — IndexedDB wrapper for local storage
 
-const DB_NAME = 'trace-code-db';
-const DB_VERSION = 1;
+const DB_NAME = 'aircode-db';
+const DB_VERSION = 2;
 
 const STORES = {
   USERS: 'users',
   PROGRESS: 'progress',
-  SESSION: 'session'
+  SESSION: 'session',
+  STATS: 'stats'
 };
 
 let db;
@@ -35,6 +36,11 @@ function openDB() {
       // Session store
       if (!database.objectStoreNames.contains(STORES.SESSION)) {
         database.createObjectStore(STORES.SESSION, { keyPath: 'key' });
+      }
+
+      // Stats store (streaks, XP, trace accuracy)
+      if (!database.objectStoreNames.contains(STORES.STATS)) {
+        database.createObjectStore(STORES.STATS, { keyPath: 'key' });
       }
     };
 
@@ -87,11 +93,12 @@ function dbDelete(storeName, key) {
 }
 
 // ─── User Functions ───────────────────────────────────
-function createUser(email, password) {
+function createUser(email, password, extra = {}) {
   return dbSet(STORES.USERS, {
     email,
-    password,
-    createdAt: new Date().toISOString()
+    password, // null for Google accounts
+    createdAt: new Date().toISOString(),
+    ...extra
   });
 }
 
@@ -135,4 +142,60 @@ function saveExamResult(subject, level, data) {
 function getExamResult(subject, level) {
   const id = `exam-${subject}-${level}`;
   return dbGet(STORES.PROGRESS, id);
+}
+
+// ─── Stats Functions (streak, XP, trace accuracy) ─────
+function getStats() {
+  return dbGet(STORES.STATS, 'user-stats').then(stats => stats || {
+    key: 'user-stats',
+    xp: 0,
+    level: 1,
+    streak: 0,
+    lastActiveDate: null,
+    traceCorrect: 0,
+    traceTotal: 0
+  });
+}
+
+function saveStats(stats) {
+  return dbSet(STORES.STATS, stats);
+}
+
+// Call once per app session, e.g. right after login/home load
+function updateStreak() {
+  return getStats().then(stats => {
+    const today = new Date().toDateString();
+    const last = stats.lastActiveDate;
+
+    if (last === today) {
+      return stats; // already counted today
+    }
+
+    const yesterday = new Date(Date.now() - 86400000).toDateString();
+    stats.streak = (last === yesterday) ? stats.streak + 1 : 1;
+    stats.lastActiveDate = today;
+
+    return saveStats(stats).then(() => stats);
+  });
+}
+
+// Call whenever a student earns XP (lesson complete, correct trace, etc.)
+function addXP(amount) {
+  return getStats().then(stats => {
+    stats.xp += amount;
+    stats.level = Math.floor(stats.xp / 100) + 1; // 100 XP per level
+    return saveStats(stats).then(() => stats);
+  });
+}
+
+// Call after every prediction comparison
+function recordTraceResult(wasCorrect) {
+  return getStats().then(stats => {
+    stats.traceTotal += 1;
+    if (wasCorrect) {
+      stats.traceCorrect += 1;
+      addXP(10); // bonus XP for a correct trace
+    }
+    return saveStats(stats);
+  });
 }
