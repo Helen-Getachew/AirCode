@@ -94,6 +94,50 @@ html, body {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ─── Logo Split Intro Transition ────────────────────── */
+#app-split-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  pointer-events: none;
+}
+
+#app-split-transition svg {
+  width: 160px;
+  height: 160px;
+}
+
+#cap-left, #cap-right, #u-shape {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: none;
+}
+
+#app-split-transition.animate #cap-left {
+  animation: capLeftOut 0.6s cubic-bezier(.65,0,.35,1) forwards;
+}
+#app-split-transition.animate #cap-right {
+  animation: capRightOut 0.6s cubic-bezier(.65,0,.35,1) forwards;
+}
+#app-split-transition.animate #u-shape {
+  animation: uShapeOut 0.6s cubic-bezier(.65,0,.35,1) forwards;
+  animation-delay: 0.05s;
+}
+
+@keyframes capLeftOut {
+  to { transform: translate(-120px, -40px); opacity: 0; }
+}
+@keyframes capRightOut {
+  to { transform: translate(120px, -40px); opacity: 0; }
+}
+@keyframes uShapeOut {
+  to { transform: translateY(140px); opacity: 0; }
+}
+
 /* ─── Connection Badge ───────────────────────────────── */
 #connection-badge {
   font-size: 12px;
@@ -510,7 +554,7 @@ button:active {
   color: var(--text-muted);
 }
 
-/* ─── Level List ─────────────────────────────────────── */
+/* ─── Level List ───────────────────────────���─────────── */
 .level-list {
   padding: 20px;
   display: flex;
@@ -911,5 +955,8 @@ button:active {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  #app-split-transition {
+    display: none;
   }
 }
