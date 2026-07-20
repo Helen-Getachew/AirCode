@@ -4,6 +4,25 @@
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js')
+      .then(reg => {
+        console.log('SW registered:', reg.scope);
+
+        // Check for updates
+        reg.addEventListener('updatefound', () => {
+          const newWorker = reg.installing;
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              // New version available
+              console.log('New version available');
+              // Optional: prompt user to refresh
+              if (confirm('A new version of AirCode is available. Refresh to update?')) {
+                newWorker.postMessage('skipWaiting');
+                window.location.reload();
+              }
+            }
+          });
+        });
+      })
       .catch(err => console.error('SW failed:', err));
   });
 }
@@ -24,31 +43,4 @@ window.addEventListener('DOMContentLoaded', () => {
     // If anything fails, go to login
     navigateTo('login');
   });
-
-  updateConnectionBadge();
-});
-
-// ─── Connection Status Badge ──────────────────────────
-function updateConnectionBadge() {
-  const badge = document.getElementById('connection-badge');
-  if (!badge) return;
-
-  if (navigator.onLine) {
-    badge.style.display = 'none';
-  } else {
-    badge.style.display = 'block';
-    badge.style.background = '#7c3aed';
-    badge.textContent = '📴 Offline — AirCode still works fully';
-  }
-}
-
-window.addEventListener('offline', updateConnectionBadge);
-
-window.addEventListener('online', () => {
-  updateConnectionBadge();
-  const toast = document.getElementById('sync-toast');
-  if (toast) {
-    toast.style.display = 'block';
-    setTimeout(() => toast.style.display = 'none', 3000);
-  }
 });
