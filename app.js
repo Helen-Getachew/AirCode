@@ -35,7 +35,7 @@ window.addEventListener('DOMContentLoaded', () => {
   getSession().then(session => {
     if (session) {
       updateStreak();
-      navigateTo('home');
+      playSplitTransition(() => navigateTo('home'));
     } else {
       navigateTo('login');
     }

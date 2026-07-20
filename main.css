@@ -554,7 +554,7 @@ button:active {
   color: var(--text-muted);
 }
 
-/* ─── Level List ───────────────────────────���─────────── */
+/* ─── Level List ────────────────────────────────���────── */
 .level-list {
   padding: 20px;
   display: flex;
