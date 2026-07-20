@@ -37,19 +37,133 @@ function updateToggleLabels() {
     btn.innerHTML = current === 'light' ? moonSVG : sunSVG;
   });
 }
-// ─── Home Screen ──────────────────────────────────────
+
+// ─── Tooltip System ───────────────────────────────────
+function initTooltips() {
+  const tooltipContainer = document.getElementById('tooltip-container');
+  if (!tooltipContainer) return;
+
+  document.addEventListener('mouseover', (e) => {
+    const target = e.target.closest('[data-tooltip]');
+    if (!target) return;
+
+    const text = target.getAttribute('data-tooltip');
+    tooltipContainer.textContent = text;
+    tooltipContainer.classList.add('visible');
+
+    const rect = target.getBoundingClientRect();
+    const tooltipRect = tooltipContainer.getBoundingClientRect();
+
+    let top = rect.bottom + 8;
+    let left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+
+    // Keep tooltip on screen
+    if (left < 8) left = 8;
+    if (left + tooltipRect.width > window.innerWidth - 8) {
+      left = window.innerWidth - tooltipRect.width - 8;
+    }
+    if (top + tooltipRect.height > window.innerHeight - 8) {
+      top = rect.top - tooltipRect.height - 8;
+    }
+
+    tooltipContainer.style.top = top + 'px';
+    tooltipContainer.style.left = left + 'px';
+  });
+
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest('[data-tooltip]')) {
+      tooltipContainer.classList.remove('visible');
+    }
+  });
+}
+
+// ─── Offline / Online Status ──────────────────────────
+function initConnectionStatus() {
+  const badge = document.getElementById('connection-badge');
+  const syncToast = document.getElementById('sync-toast');
+  if (!badge) return;
+
+  let wasOffline = false;
+
+  function updateStatus() {
+    const isOnline = navigator.onLine;
+
+    if (!isOnline) {
+      wasOffline = true;
+      badge.style.display = 'block';
+      badge.className = 'offline';
+      badge.textContent = '⚠️ Offline Mode — Your progress is saved locally';
+    } else if (wasOffline) {
+      // Just came back online
+      badge.className = 'online';
+      badge.textContent = '🌐 Back Online';
+
+      // Show sync toast
+      if (syncToast) {
+        syncToast.style.display = 'block';
+        setTimeout(() => {
+          syncToast.style.display = 'none';
+        }, 3000);
+      }
+
+      // Hide badge after a delay
+      setTimeout(() => {
+        badge.className = 'hidden';
+      }, 2500);
+
+      wasOffline = false;
+    } else {
+      badge.className = 'hidden';
+    }
+  }
+
+  window.addEventListener('online', updateStatus);
+  window.addEventListener('offline', updateStatus);
+  updateStatus();
+}
+
+// ─── Stats Bar ────────────────────────────────────────
 function updateStatsBar() {
   if (typeof getStats !== 'function') return;
   getStats().then(stats => {
     const streakEl = document.getElementById('stat-streak');
     const levelEl = document.getElementById('stat-level');
     const traceEl = document.getElementById('stat-trace');
-    if (streakEl) streakEl.textContent = `🔥 ${stats.streak}`;
-    if (levelEl) levelEl.textContent = `Lv ${stats.level}`;
+
+    if (streakEl) {
+      const streak = stats.streak || 0;
+      streakEl.textContent = streak > 0 ? `🔥 ${streak}` : '🔥 0';
+      streakEl.style.color = streak > 0 ? 'var(--accent)' : 'var(--text-muted)';
+    }
+
+    if (levelEl) {
+      levelEl.textContent = `Lv ${stats.level || 1}`;
+    }
+
     if (traceEl) {
-      traceEl.textContent = stats.traceTotal > 0
-        ? Math.round((stats.traceCorrect / stats.traceTotal) * 100) + '%'
-        : '–';
+      const hasTraceData = stats.traceTotal > 0;
+      if (hasTraceData) {
+        const accuracy = Math.round((stats.traceCorrect / stats.traceTotal) * 100);
+        traceEl.textContent = `${accuracy}%`;
+        traceEl.style.color = accuracy >= 70 ? 'var(--success)' : 'var(--accent)';
+      } else {
+        traceEl.textContent = 'Start a lesson!';
+        traceEl.style.color = 'var(--text-muted)';
+        traceEl.style.fontSize = '12px';
+      }
+    }
+  }).catch(err => {
+    console.warn('Failed to load stats:', err);
+    // Show friendly fallback
+    const streakEl = document.getElementById('stat-streak');
+    const levelEl = document.getElementById('stat-level');
+    const traceEl = document.getElementById('stat-trace');
+    if (streakEl) streakEl.textContent = '🔥 0';
+    if (levelEl) levelEl.textContent = 'Lv 1';
+    if (traceEl) {
+      traceEl.textContent = 'Start a lesson!';
+      traceEl.style.color = 'var(--text-muted)';
+      traceEl.style.fontSize = '12px';
     }
   });
 }
@@ -67,24 +181,27 @@ const ONBOARDING_STEPS = [
     body: 'Choose a language to start learning. Every lesson works with zero internet once the app is loaded.'
   },
   {
-    target: null, // no specific target, just a general message
+    target: null,
     title: '🔍 Trace before you run',
     body: 'When you get to the code editor, try predicting the output before hitting Run. That habit is the whole idea behind AirCode.'
   }
 ];
 
 function maybeShowOnboarding() {
+  if (typeof dbGet !== 'function' || typeof STORES === 'undefined') return;
   dbGet(STORES.SESSION, 'onboarded').then(flag => {
-    if (flag) return; // already seen it
+    if (flag) return;
     showOnboardingStep(0);
-  }).catch(() => {}); // never block the app if this fails
+  }).catch(() => {});
 }
 
 function showOnboardingStep(index) {
   document.getElementById('onboarding-overlay')?.remove();
 
   if (index >= ONBOARDING_STEPS.length) {
-    dbSet(STORES.SESSION, { key: 'onboarded', value: true });
+    if (typeof dbSet === 'function' && typeof STORES !== 'undefined') {
+      dbSet(STORES.SESSION, { key: 'onboarded', value: true });
+    }
     return;
   }
 
@@ -131,11 +248,14 @@ function showOnboardingStep(index) {
 
   document.getElementById('ob-next').addEventListener('click', () => showOnboardingStep(index + 1));
   document.getElementById('ob-skip').addEventListener('click', () => {
-    dbSet(STORES.SESSION, { key: 'onboarded', value: true });
+    if (typeof dbSet === 'function' && typeof STORES !== 'undefined') {
+      dbSet(STORES.SESSION, { key: 'onboarded', value: true });
+    }
     overlay.remove();
   });
 }
 
+// ─── Home Screen ──────────────────────────────────────
 function renderHome() {
   const container = document.getElementById('subject-list');
   if (!container) return;
@@ -143,6 +263,8 @@ function renderHome() {
 
   updateStatsBar();
   maybeShowOnboarding();
+  initTooltips();
+  initConnectionStatus();
 
   const themeBtn = document.getElementById('theme-toggle');
   if (themeBtn) themeBtn.onclick = toggleTheme;
@@ -157,36 +279,36 @@ function renderHome() {
   });
 
   const subjects = [
-     {
-    id: 'html',
-    name: 'HTML',
-    desc: 'Structure of the web · 3 levels · 30 lessons',
-    color: '#e34c26',
-    bg: 'rgba(227,76,38,0.12)',
-    border: 'rgba(227,76,38,0.3)',
-    svg: `<svg viewBox="0 0 452 520" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
-      <path fill="#e44d26" d="M41 460L0 0h452l-41 460-185 52z"/>
-      <path fill="#f16529" d="M226 489l149-41 35-394H226z"/>
-      <path fill="#ebebeb" d="M226 208h-75l-5-58h80V94H84l15 171h127zm0 147l-64-17-4-45h-56l8 87 116 32z"/>
-      <path fill="#fff" d="M226 208v56h70l-7 73-63 17v59l116-32 8-87 8-86zm0-114v56h137l5-56z"/>
-    </svg>`
-  },
-     {
-    id: 'css',
-    name: 'CSS',
-    desc: 'Style and layout · 3 levels · 30 lessons',
-    color: '#264de4',
-    bg: 'rgba(38,77,228,0.12)',
-    border: 'rgba(38,77,228,0.3)',
-svg: `<svg viewBox="0 0 384 512" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
-  <path fill="#264de4" d="M0 0l35 395 157 45 157-45 35-395z"/>
-  <path fill="#2965f1" d="M192 432l128-36 30-340H192z"/>
-  <path fill="#fff" d="M192 149h64l4-45h-68V57h117l-12 129H192zm0 205l-64-18-4-43H77l8 89 107 30z"/>
-  <path fill="#ebebeb" d="M192 149v47h-60l-4-47zm0 205v47l-107-30-4-18h47l2 19 62 17z"/>
-  <path fill="#fff" d="M192 196h60l-6 64-54 15v49l100-28 13-148H192z"/>
-  <path fill="#ebebeb" d="M192 196v47l-57 16-4-47zm0 128v49l-62-17-4-19h47l2 19z"/>
-</svg>`
-  },
+    {
+      id: 'html',
+      name: 'HTML',
+      desc: 'Structure of the web · 3 levels · 30 lessons',
+      color: '#e34c26',
+      bg: 'rgba(227,76,38,0.12)',
+      border: 'rgba(227,76,38,0.3)',
+      svg: `<svg viewBox="0 0 452 520" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#e44d26" d="M41 460L0 0h452l-41 460-185 52z"/>
+        <path fill="#f16529" d="M226 489l149-41 35-394H226z"/>
+        <path fill="#ebebeb" d="M226 208h-75l-5-58h80V94H84l15 171h127zm0 147l-64-17-4-45h-56l8 87 116 32z"/>
+        <path fill="#fff" d="M226 208v56h70l-7 73-63 17v59l116-32 8-87 8-86zm0-114v56h137l5-56z"/>
+      </svg>`
+    },
+    {
+      id: 'css',
+      name: 'CSS',
+      desc: 'Style and layout · 3 levels · 30 lessons',
+      color: '#264de4',
+      bg: 'rgba(38,77,228,0.12)',
+      border: 'rgba(38,77,228,0.3)',
+      svg: `<svg viewBox="0 0 384 512" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#264de4" d="M0 0l35 395 157 45 157-45 35-395z"/>
+        <path fill="#2965f1" d="M192 432l128-36 30-340H192z"/>
+        <path fill="#fff" d="M192 149h64l4-45h-68V57h117l-12 129H192zm0 205l-64-18-4-43H77l8 89 107 30z"/>
+        <path fill="#ebebeb" d="M192 149v47h-60l-4-47zm0 205v47l-107-30-4-18h47l2 19 62 17z"/>
+        <path fill="#fff" d="M192 196h60l-6 64-54 15v49l100-28 13-148H192z"/>
+        <path fill="#ebebeb" d="M192 196v47l-57 16-4-47zm0 128v49l-62-17-4-19h47l2 19z"/>
+      </svg>`
+    },
     {
       id: 'javascript',
       name: 'JavaScript',
@@ -199,25 +321,26 @@ svg: `<svg viewBox="0 0 384 512" width="28" height="28" xmlns="http://www.w3.org
         <text x="3" y="26" font-family="Arial Black,sans-serif" font-weight="900" font-size="18" fill="#222">JS</text>
       </svg>`
     },
-     {
-    id: 'python',
-    name: 'Python',
-    desc: 'Programming fundamentals · 3 levels · 30 lessons',
-    color: '#3572A5',
-    bg: 'rgba(53,114,165,0.12)',
-    border: 'rgba(53,114,165,0.3)',
-    svg: `<svg viewBox="0 0 256 255" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
-  <path d="M126 0C60 0 64 28 64 28v29h63v9H40S0 62 0 128s35 64 35 64h21V175s-1-35 34-35h61s33 1 33-32V34S159 0 126 0zm-13 19c7 0 12 5 12 12s-5 12-12 12-12-5-12-12 5-12 12-12z" fill="#3572A5"/>
-  <path d="M130 255c66 0 62-28 62-28v-29h-63v-9h87s40 4 40-62-35-64-35-64h-21v17s1 35-34 35H105s-33-1-33 32v53s-5 55 58 55zm13-19c-7 0-12-5-12-12s5-12 12-12 12 5 12 12-5 12-12 12z" fill="#ffd43b"/>
-</svg>`
-  }
-];
+    {
+      id: 'python',
+      name: 'Python',
+      desc: 'Programming fundamentals · 3 levels · 30 lessons',
+      color: '#3572A5',
+      bg: 'rgba(53,114,165,0.12)',
+      border: 'rgba(53,114,165,0.3)',
+      svg: `<svg viewBox="0 0 256 255" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
+        <path d="M126 0C60 0 64 28 64 28v29h63v9H40S0 62 0 128s35 64 35 64h21V175s-1-35 34-35h61s33 1 33-32V34S159 0 126 0zm-13 19c7 0 12 5 12 12s-5 12-12 12-12-5-12-12 5-12 12-12z" fill="#3572A5"/>
+        <path d="M130 255c66 0 62-28 62-28v-29h-63v-9h87s40 4 40-62-35-64-35-64h-21v17s1 35-34 35H105s-33-1-33 32v53s-5 55 58 55zm13-19c-7 0-12-5-12-12s5-12 12-12 12 5 12 12-5 12-12 12z" fill="#ffd43b"/>
+      </svg>`
+    }
+  ];
 
   const wrapper = document.createElement('div');
   wrapper.style.cssText = 'padding:20px;display:flex;flex-direction:column;gap:12px';
 
   subjects.forEach(subject => {
     const card = document.createElement('div');
+    card.className = 'subject-card';
     card.style.cssText = `
       background: var(--surface);
       border: 1.5px solid ${subject.border};
@@ -267,6 +390,7 @@ svg: `<svg viewBox="0 0 384 512" width="28" height="28" xmlns="http://www.w3.org
   container.appendChild(wrapper);
   document.querySelectorAll('.theme-toggle').forEach(btn => btn.onclick = toggleTheme);
 }
+
 // ─── Lesson List Screen ───────────────────────────────
 function renderLessonList(subjectId, level) {
   const subject = getSubject(subjectId);
@@ -279,14 +403,12 @@ function renderLessonList(subjectId, level) {
   const lessonContainer = document.createElement('div');
   lessonContainer.className = 'lessons-container';
 
-  // Check if this level is locked
   const prevLevel = level === 'intermediate' ? 'beginner' : level === 'advanced' ? 'intermediate' : null;
 
   getExamResult(subjectId, prevLevel || 'beginner').then(examResult => {
     const levelLocked = prevLevel && !examResult?.passed;
 
     if (levelLocked) {
-      // Show locked banner
       const banner = document.createElement('div');
       banner.style.cssText = `
         margin: 0 0 16px;
@@ -343,7 +465,6 @@ function renderLessonList(subjectId, level) {
         lessonContainer.appendChild(item);
       });
 
-      // Exam button — always visible but locked if level is locked
       const examBtn = document.createElement('button');
       examBtn.className = levelLocked ? 'btn-secondary' : 'btn-success';
       examBtn.style.cssText = 'margin:8px 0;width:100%';
@@ -364,6 +485,7 @@ function renderLessonList(subjectId, level) {
     navigateTo('levels', { subject: subjectId });
   document.querySelectorAll('.theme-toggle').forEach(btn => btn.onclick = toggleTheme);
 }
+
 // ─── Lesson Detail Screen ─────────────────────────────
 function renderLesson(subjectId, level, lessonId) {
   const lesson = getLesson(subjectId, level, lessonId);
@@ -403,6 +525,7 @@ function renderLesson(subjectId, level, lessonId) {
   document.getElementById('btn-back-lessons').onclick = () => navigateTo('lessons', { subject: subjectId, level });
   document.querySelectorAll('.theme-toggle').forEach(btn => btn.onclick = toggleTheme);
 }
+
 // ─── Levels Screen ────────────────────────────────────
 function renderLevels(subjectId) {
   const subject = getSubject(subjectId);
@@ -479,28 +602,12 @@ function showLockMessage(message) {
 
   const toast = document.createElement('div');
   toast.id = 'lock-toast';
-  toast.style.cssText = `
-    position: fixed;
-    bottom: 80px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--surface);
-    border: 1.5px solid var(--error);
-    color: var(--text);
-    padding: 14px 20px;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 500;
-    z-index: 999;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-    max-width: 320px;
-    text-align: center;
-    animation: fadeIn 0.2s ease;
-  `;
+  toast.className = 'toast';
   toast.textContent = '🔒 ' + message;
   document.body.appendChild(toast);
   setTimeout(() => toast.remove(), 3000);
 }
+
 // ─── Exercise ─────────────────────────────────────────
 function renderExercise(quiz, container, subjectId, level, lessonId, lessons, currentIndex) {
   const box = document.createElement('div');
@@ -590,7 +697,6 @@ function renderExercise(quiz, container, subjectId, level, lessonId, lessons, cu
 
 // ─── Show "Next Lesson" Button ─────────────────────────
 function showNextButton(container, subjectId, level, lessonId, lessons, currentIndex) {
-  // Avoid stacking duplicate buttons if this runs more than once
   const existing = container.querySelector('#btn-next-lesson');
   if (existing) existing.remove();
 
@@ -627,7 +733,13 @@ function renderExam(subjectId, level) {
   container.innerHTML = '';
 
   if (questions.length === 0) {
-    container.innerHTML = `<div style="padding:40px 16px;text-align:center;color:var(--text-muted)">Exam coming soon.</div>`;
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">📝</div>
+        <div class="empty-state-title">Exam Coming Soon</div>
+        <div class="empty-state-desc">This exam is still being prepared. Check back later!</div>
+      </div>
+    `;
     return;
   }
 
@@ -714,6 +826,7 @@ function renderExam(subjectId, level) {
   renderQuestion();
   document.getElementById('btn-back-exam').onclick = () => navigateTo('lessons', { subject: subjectId, level });
 }
+
 // ─── Practice Screen ──────────────────────────────────
 function renderPractice() {
   const container = document.getElementById('practice-content');
@@ -731,7 +844,17 @@ function renderPractice() {
       color: '#e34c26',
       bg: 'rgba(227,76,38,0.12)',
       border: 'rgba(227,76,38,0.3)',
-      starter: '<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <title>My Page</title>\n</head>\n<body>\n  <h1>Hello World</h1>\n  <p>Start coding here...</p>\n</body>\n</html>',
+      starter: '<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Page</title>
+</head>
+<body>
+  <h1>Hello World</h1>
+  <p>Start coding here...</p>
+</body>
+</html>',
       svg: `<svg viewBox="0 0 452 520" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
         <path fill="#e44d26" d="M41 460L0 0h452l-41 460-185 52z"/>
         <path fill="#f16529" d="M226 489l149-41 35-394H226z"/>
@@ -746,7 +869,20 @@ function renderPractice() {
       color: '#264de4',
       bg: 'rgba(38,77,228,0.12)',
       border: 'rgba(38,77,228,0.3)',
-      starter: 'body {\n  font-family: sans-serif;\n  background: #f0f0f0;\n  margin: 0;\n  padding: 20px;\n}\n\nh1 {\n  color: #333;\n}\n\np {\n  color: #666;\n}',
+      starter: 'body {
+  font-family: sans-serif;
+  background: #f0f0f0;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  color: #333;
+}
+
+p {
+  color: #666;
+}',
       svg: `<svg viewBox="0 0 384 512" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
         <path fill="#264de4" d="M0 0l35 395 157 45 157-45 35-395z"/>
         <path fill="#2965f1" d="M192 432l128-36 30-340H192z"/>
@@ -756,7 +892,7 @@ function renderPractice() {
         <path fill="#ebebeb" d="M192 196v47l-57 16-4-47zm0 128v49l-62-17-4-19h47l2 19z"/>
       </svg>`
     },
-     {
+    {
       id: 'javascript',
       name: 'JavaScript',
       desc: 'Logic and interactivity · 3 levels · 30 lessons',
@@ -775,7 +911,13 @@ function renderPractice() {
       color: '#3572A5',
       bg: 'rgba(53,114,165,0.12)',
       border: 'rgba(53,114,165,0.3)',
-      starter: '# Write your Python here\n\ndef greet(name):\n    return f"Hello, {name}!"\n\nprint(greet("World"))\nprint(greet("AirCode"))',
+      starter: '# Write your Python here
+
+def greet(name):
+    return f"Hello, {name}!"
+
+print(greet("World"))
+print(greet("AirCode"))',
       svg: `<svg viewBox="0 0 256 255" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
         <path d="M126 0C60 0 64 28 64 28v29h63v9H40S0 62 0 128s35 64 35 64h21V175s-1-35 34-35h61s33 1 33-32V34S159 0 126 0zm-13 19c7 0 12 5 12 12s-5 12-12 12-12-5-12-12 5-12 12-12z" fill="#3572A5"/>
         <path d="M130 255c66 0 62-28 62-28v-29h-63v-9h87s40 4 40-62-35-64-35-64h-21v17s1 35-34 35H105s-33-1-33 32v53s-5 55 58 55zm13-19c-7 0-12-5-12-12s5-12 12-12 12 5 12 12-5 12-12 12z" fill="#ffd43b"/>
@@ -785,6 +927,7 @@ function renderPractice() {
 
   subjects.forEach(subject => {
     const card = document.createElement('div');
+    card.className = 'subject-card';
     card.style.cssText = `
       background: var(--surface);
       border: 1.5px solid ${subject.border};
@@ -952,6 +1095,7 @@ function renderProfile() {
     document.querySelectorAll('.theme-toggle').forEach(btn => btn.onclick = toggleTheme);
   });
 }
+
 // ─── Helpers ──────────────────────────────────────────
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
