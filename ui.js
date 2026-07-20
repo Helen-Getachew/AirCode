@@ -836,6 +836,12 @@ function renderPractice() {
   const wrapper = document.createElement('div');
   wrapper.style.cssText = 'padding:20px;display:flex;flex-direction:column;gap:12px';
 
+  const htmlStarter = '<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <title>My Page</title>\n</head>\n<body>\n  <h1>Hello World</h1>\n  <p>Start coding here...</p>\n</body>\n</html>';
+  
+  const cssStarter = 'body {\n  font-family: sans-serif;\n  background: #f0f0f0;\n  margin: 0;\n  padding: 20px;\n}\n\nh1 {\n  color: #333;\n}\n\np {\n  color: #666;\n}';
+  
+  const pythonStarter = '# Write your Python here\n\ndef greet(name):\n    return f"Hello, {name}!"\n\nprint(greet("World"))\nprint(greet("AirCode"))';
+
   const subjects = [
     {
       id: 'html',
@@ -844,17 +850,7 @@ function renderPractice() {
       color: '#e34c26',
       bg: 'rgba(227,76,38,0.12)',
       border: 'rgba(227,76,38,0.3)',
-      starter: '<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>My Page</title>
-</head>
-<body>
-  <h1>Hello World</h1>
-  <p>Start coding here...</p>
-</body>
-</html>',
+      starter: htmlStarter,
       svg: `<svg viewBox="0 0 452 520" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
         <path fill="#e44d26" d="M41 460L0 0h452l-41 460-185 52z"/>
         <path fill="#f16529" d="M226 489l149-41 35-394H226z"/>
@@ -869,20 +865,7 @@ function renderPractice() {
       color: '#264de4',
       bg: 'rgba(38,77,228,0.12)',
       border: 'rgba(38,77,228,0.3)',
-      starter: 'body {
-  font-family: sans-serif;
-  background: #f0f0f0;
-  margin: 0;
-  padding: 20px;
-}
-
-h1 {
-  color: #333;
-}
-
-p {
-  color: #666;
-}',
+      starter: cssStarter,
       svg: `<svg viewBox="0 0 384 512" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
         <path fill="#264de4" d="M0 0l35 395 157 45 157-45 35-395z"/>
         <path fill="#2965f1" d="M192 432l128-36 30-340H192z"/>
@@ -911,13 +894,7 @@ p {
       color: '#3572A5',
       bg: 'rgba(53,114,165,0.12)',
       border: 'rgba(53,114,165,0.3)',
-      starter: '# Write your Python here
-
-def greet(name):
-    return f"Hello, {name}!"
-
-print(greet("World"))
-print(greet("AirCode"))',
+      starter: pythonStarter,
       svg: `<svg viewBox="0 0 256 255" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
         <path d="M126 0C60 0 64 28 64 28v29h63v9H40S0 62 0 128s35 64 35 64h21V175s-1-35 34-35h61s33 1 33-32V34S159 0 126 0zm-13 19c7 0 12 5 12 12s-5 12-12 12-12-5-12-12 5-12 12-12z" fill="#3572A5"/>
         <path d="M130 255c66 0 62-28 62-28v-29h-63v-9h87s40 4 40-62-35-64-35-64h-21v17s1 35-34 35H105s-33-1-33 32v53s-5 55 58 55zm13-19c-7 0-12-5-12-12s5-12 12-12 12 5 12 12-5 12-12 12z" fill="#ffd43b"/>
