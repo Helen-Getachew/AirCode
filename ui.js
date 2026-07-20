@@ -54,12 +54,95 @@ function updateStatsBar() {
   });
 }
 
+// ─── First-Run Onboarding Walkthrough ──────────────────
+const ONBOARDING_STEPS = [
+  {
+    target: '#stats-bar',
+    title: '👋 Welcome to AirCode',
+    body: 'This bar tracks your streak, level, and trace accuracy as you learn. Everything here is saved on your device, even offline.'
+  },
+  {
+    target: '#subject-list',
+    title: '📚 Pick a subject',
+    body: 'Choose a language to start learning. Every lesson works with zero internet once the app is loaded.'
+  },
+  {
+    target: null, // no specific target, just a general message
+    title: '🔍 Trace before you run',
+    body: 'When you get to the code editor, try predicting the output before hitting Run. That habit is the whole idea behind AirCode.'
+  }
+];
+
+function maybeShowOnboarding() {
+  dbGet(STORES.SESSION, 'onboarded').then(flag => {
+    if (flag) return; // already seen it
+    showOnboardingStep(0);
+  }).catch(() => {}); // never block the app if this fails
+}
+
+function showOnboardingStep(index) {
+  document.getElementById('onboarding-overlay')?.remove();
+
+  if (index >= ONBOARDING_STEPS.length) {
+    dbSet(STORES.SESSION, { key: 'onboarded', value: true });
+    return;
+  }
+
+  const step = ONBOARDING_STEPS[index];
+  const targetEl = step.target ? document.querySelector(step.target) : null;
+
+  const overlay = document.createElement('div');
+  overlay.id = 'onboarding-overlay';
+  overlay.style.cssText = `position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.55)`;
+
+  let highlightStyle = '';
+  if (targetEl) {
+    const r = targetEl.getBoundingClientRect();
+    highlightStyle = `position:absolute;top:${r.top - 4}px;left:${r.left - 4}px;
+      width:${r.width + 8}px;height:${r.height + 8}px;
+      border:2px solid var(--accent);border-radius:12px;
+      box-shadow:0 0 0 9999px rgba(0,0,0,0.55);pointer-events:none`;
+  }
+
+  const cardTop = targetEl
+    ? Math.min(targetEl.getBoundingClientRect().bottom + 16, window.innerHeight - 180)
+    : window.innerHeight / 2 - 90;
+
+  overlay.innerHTML = `
+    ${targetEl ? `<div style="${highlightStyle}"></div>` : ''}
+    <div style="position:absolute;top:${cardTop}px;left:16px;right:16px;max-width:340px;margin:0 auto;
+      background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px;
+      box-shadow:0 8px 32px rgba(0,0,0,0.4)">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px">${step.title}</div>
+      <div style="font-size:13px;color:var(--text-muted);line-height:1.5;margin-bottom:14px">${step.body}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <button id="ob-skip" style="font-size:12px;color:var(--text-muted);background:none;padding:6px">Skip</button>
+        <div style="display:flex;gap:6px;align-items:center">
+          <span style="font-size:11px;color:var(--text-muted)">${index + 1}/${ONBOARDING_STEPS.length}</span>
+          <button id="ob-next" class="btn-primary" style="padding:8px 16px;font-size:13px">
+            ${index === ONBOARDING_STEPS.length - 1 ? 'Got it' : 'Next'}
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  document.getElementById('ob-next').addEventListener('click', () => showOnboardingStep(index + 1));
+  document.getElementById('ob-skip').addEventListener('click', () => {
+    dbSet(STORES.SESSION, { key: 'onboarded', value: true });
+    overlay.remove();
+  });
+}
+
 function renderHome() {
   const container = document.getElementById('subject-list');
   if (!container) return;
   container.innerHTML = '';
 
   updateStatsBar();
+  maybeShowOnboarding();
 
   const themeBtn = document.getElementById('theme-toggle');
   if (themeBtn) themeBtn.onclick = toggleTheme;
