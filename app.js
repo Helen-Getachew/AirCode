@@ -26,44 +26,7 @@ if ('serviceWorker' in navigator) {
       .catch(err => console.error('SW failed:', err));
   });
 }
-// ─── Intro split-logo transition ──────────────────────
-function playSplitTransition(callback) {
-  const el = document.getElementById('app-split-transition');
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (!el || prefersReducedMotion) {
-    callback();
-    return;
-  }
-
-  let finished = false;
-  function finish() {
-    if (finished) return;
-    finished = true;
-    el.style.display = 'none';
-    el.classList.remove('animate', 'fade-out');
-    el.style.opacity = '';
-    callback();
-  }
-
-  el.style.display = 'flex';
-  el.style.opacity = '1';
-  void el.offsetWidth; // force reflow so the transition applies cleanly
-
-  // Hold the full logo for a beat, then split it apart
-  setTimeout(() => el.classList.add('animate'), 500);
-
-  // u-shape finishes last (it has the 0.05s animation-delay)
-  el.addEventListener('animationend', function onEnd(e) {
-    if (e.target.id !== 'u-shape') return;
-    el.removeEventListener('animationend', onEnd);
-    el.classList.add('fade-out');
-    setTimeout(finish, 250);
-  });
-
-  // Safety net in case animationend never fires
-  setTimeout(finish, 2200);
-}
 // ─── Start App ────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
   initTheme();
