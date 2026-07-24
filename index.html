@@ -16,7 +16,32 @@
 <body>
 
   <div id="app">
-
+<!-- Intro: split-logo transition -->
+<div id="app-split-transition">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:14px">
+    <svg viewBox="0 0 240 230" xmlns="http://www.w3.org/2000/svg">
+      <g id="cap-left">
+        <path d="M120,28 L28,84 L120,140 L94,84 Z"
+              fill="var(--surface2)" stroke="var(--accent)" stroke-width="5" stroke-linejoin="round"/>
+        <!-- tassel -->
+        <line x1="94" y1="84" x2="72" y2="118" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="70" cy="124" r="5" fill="var(--accent)"/>
+        <path d="M65,129 L75,129 L70,142 Z" fill="var(--accent)"/>
+      </g>
+      <g id="cap-right">
+        <path d="M120,28 L212,84 L120,140 L146,84 Z"
+              fill="var(--surface2)" stroke="var(--accent)" stroke-width="5" stroke-linejoin="round"/>
+      </g>
+      <g id="u-shape">
+        <path d="M94,128 L94,174 C94,192 106,205 120,205 C134,205 146,192 146,174
+                 L146,128 L127,128 L127,171 C127,180 124,186 120,186
+                 C116,186 113,180 113,171 L113,128 Z"
+              fill="var(--surface2)" stroke="var(--accent)" stroke-width="5" stroke-linejoin="round"/>
+      </g>
+    </svg>
+    <div class="app-logo" style="font-size:26px">AirCode</div>
+  </div>
+</div>
     <!-- Offline/Online status badge -->
     <div id="connection-badge" style="display:none;position:fixed;top:0;left:0;right:0;z-index:999;
       padding:6px 12px;text-align:center;font-size:12px;font-weight:600;color:#fff;
