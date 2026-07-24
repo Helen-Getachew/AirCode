@@ -99,11 +99,17 @@ html, body {
   position: fixed;
   inset: 0;
   z-index: 2000;
-  display: flex;
+  display: none;              /* ← was missing */
   align-items: center;
   justify-content: center;
   background: var(--bg);
   pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+#app-split-transition.fade-out {
+  opacity: 0;
 }
 
 #app-split-transition svg {
