@@ -31,18 +31,15 @@ if ('serviceWorker' in navigator) {
 window.addEventListener('DOMContentLoaded', () => {
   initTheme();
 
-  // Check for existing session
-  getSession().then(session => {
-    if (session) {
-      updateStreak();
-      playSplitTransition(() => navigateTo('home'));
-    } else {
-      navigateTo('login');
-    }
-  }).catch(() => {
-    // If anything fails, go to login
+getSession().then(session => {
+  if (session) {
+    updateStreak();
+    playSplitTransition(() => navigateTo('home'));
+  } else {
     navigateTo('login');
-  });
+  }
+}).catch(() => {
+  navigateTo('login');
 });
 // ─── Online / Offline Status ─────────────────────
 
