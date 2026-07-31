@@ -44,3 +44,34 @@ window.addEventListener('DOMContentLoaded', () => {
     navigateTo('login');
   });
 });
+// ─── Online / Offline Status ─────────────────────
+
+function updateConnectionStatus() {
+  const badge = document.getElementById("connection-badge");
+
+  if (!badge) return;
+
+  if (navigator.onLine) {
+    badge.style.display = "block";
+    badge.style.background = "var(--success)";
+    badge.textContent = "✓ Back online";
+
+    setTimeout(() => {
+      badge.style.display = "none";
+    }, 2500);
+
+  } else {
+    badge.style.display = "block";
+    badge.style.background = "#dc2626";
+    badge.textContent = "No internet connection — AirCode is offline";
+  }
+}
+
+
+window.addEventListener("offline", updateConnectionStatus);
+window.addEventListener("online", updateConnectionStatus);
+
+// Check when app opens
+window.addEventListener("DOMContentLoaded", () => {
+  updateConnectionStatus();
+});
