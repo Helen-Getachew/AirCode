@@ -176,32 +176,43 @@ const GOOGLE_CLIENT_ID = '494701092193-4l7mi2asbr57utr9ucj0p28ql1cp8lnf.apps.goo
 function initGoogleSignIn() {
   const container = document.getElementById('google-btn-container');
   const offlineNote = document.getElementById('google-offline-note');
+
   if (!container) return;
 
-  if (!navigator.onLine || typeof google === 'undefined') {
-    container.style.display = 'none';
-    if (offlineNote) offlineNote.style.display = 'block';
-    return;
-  }
+  // Wait for Google script to load
+  const tryGoogle = () => {
 
-  try {
-    google.accounts.id.initialize({
-      client_id: GOOGLE_CLIENT_ID,
-      callback: handleGoogleCredential
-    });
+    if (typeof google === 'undefined') {
+      setTimeout(tryGoogle, 500);
+      return;
+    }
 
-    google.accounts.id.renderButton(container, {
-      theme: 'outline',
-      size: 'large',
-      width: 280,
-      text: 'continue_with'
-    });
-  } catch (e) {
-    container.style.display = 'none';
-    if (offlineNote) offlineNote.style.display = 'block';
-  }
+    try {
+      google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleGoogleCredential
+      });
+
+      google.accounts.id.renderButton(container, {
+        theme: 'outline',
+        size: 'large',
+        width: 280,
+        text: 'continue_with'
+      });
+
+      container.style.display = 'block';
+
+      if (offlineNote) {
+        offlineNote.style.display = 'none';
+      }
+
+    } catch (e) {
+      console.error("Google Sign-In error:", e);
+    }
+  };
+
+  tryGoogle();
 }
-
 function handleGoogleCredential(response) {
   // Decode the JWT payload locally, no server needed
   const payload = JSON.parse(atob(response.credential.split('.')[1]));
