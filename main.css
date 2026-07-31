@@ -1,3 +1,6 @@
+html {
+    color-scheme: light;
+}
 /* ─── Reset ─────────────────────────────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
