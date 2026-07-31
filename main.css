@@ -949,3 +949,36 @@ button:active {
   font-size: 16px;
   cursor: pointer;
 }
+.practice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 16px;
+}
+
+.practice-card {
+  height: 150px;
+  border-radius: 24px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.practice-icon {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.practice-card h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.practice-card p {
+  margin-top: 8px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
