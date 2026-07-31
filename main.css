@@ -1,6 +1,4 @@
-html {
-    color-scheme: light;
-}
+
 /* ─── Reset ─────────────────────────────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -929,20 +927,4 @@ button:active {
   #app-split-transition {
     display: none;
   }
-}
-/* existing AirCode CSS */
-
-...
-
-/* Samsung Internet fix */
-html[data-theme="light"] {
-    color-scheme: light;
-}
-
-html[data-theme="dark"] {
-    color-scheme: dark;
-}
-
-html[data-theme="light"] body {
-    background-color: #ffffff;
 }
