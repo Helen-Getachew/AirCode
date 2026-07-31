@@ -46,32 +46,42 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 // ─── Online / Offline Status ─────────────────────
 
-function updateConnectionStatus() {
-  const badge = document.getElementById("connection-badge");
+const connectionBadge = document.getElementById("connection-badge");
 
-  if (!badge) return;
+function showConnectionStatus(status) {
+  if (!connectionBadge) return;
 
-  if (navigator.onLine) {
-    badge.style.display = "block";
-    badge.style.background = "var(--success)";
-    badge.textContent = "✓ Back online";
+  connectionBadge.className = status;
+
+  if (status === "offline") {
+    connectionBadge.textContent =
+      "No internet connection — AirCode is offline";
+    connectionBadge.style.display = "block";
+  }
+
+  if (status === "online") {
+    connectionBadge.textContent =
+      "✓ Back online";
+    connectionBadge.style.display = "block";
 
     setTimeout(() => {
-      badge.style.display = "none";
-    }, 2500);
-
-  } else {
-    badge.style.display = "block";
-    badge.style.background = "#dc2626";
-    badge.textContent = "No internet connection — AirCode is offline";
+      connectionBadge.style.display = "none";
+    }, 3000);
   }
 }
 
 
-window.addEventListener("offline", updateConnectionStatus);
-window.addEventListener("online", updateConnectionStatus);
-
-// Check when app opens
-window.addEventListener("DOMContentLoaded", () => {
-  updateConnectionStatus();
+// Detect changes
+window.addEventListener("offline", () => {
+  showConnectionStatus("offline");
 });
+
+window.addEventListener("online", () => {
+  showConnectionStatus("online");
+});
+
+
+// Check current state
+if (!navigator.onLine) {
+  showConnectionStatus("offline");
+}
