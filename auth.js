@@ -34,7 +34,10 @@ function showLoginForm() {
     </div>
     <div class="form-group">
       <label>Password</label>
-      <input class="form-input" type="password" id="input-password" placeholder="Your password" />
+    <div class="password-wrapper">
+  <input class="form-input" type="password" id="input-password" placeholder="Your password" />
+  <button type="button" id="toggle-password">Show</button>
+</div>
     </div>
     <button class="btn-primary" id="btn-login">Log In</button>
     <div class="auth-switch">
@@ -42,7 +45,18 @@ function showLoginForm() {
     </div>
   `;
 
-  document.getElementById('btn-login').addEventListener('click', handleLogin);
+  document.getElementById('toggle-password').addEventListener('click', () => {
+  const input = document.getElementById('input-password');
+  const button = document.getElementById('toggle-password');
+
+  if (input.type === "password") {
+    input.type = "text";
+    button.textContent = "Hide";
+  } else {
+    input.type = "password";
+    button.textContent = "Show";
+  }
+});
   document.getElementById('go-signup').addEventListener('click', showSignupForm);
   document.getElementById('input-password').addEventListener('keydown', e => {
     if (e.key === 'Enter') handleLogin();
@@ -145,11 +159,17 @@ function handleSignup() {
       showAuthError('An account with this email already exists.');
       return;
     }
-    createUser(email, password).then(() => {
-      saveSession(email).then(() => {
-        logEvent(email, 'signup');
-        navigateTo('home');
-      });
+  createUser(email, password).then(() => {
+  showAuthError('Account created successfully!');
+
+  saveSession(email).then(() => {
+    logEvent(email, 'signup');
+
+    setTimeout(() => {
+      navigateTo('home');
+    }, 1000);
+
+       });
     });
   });
 }
