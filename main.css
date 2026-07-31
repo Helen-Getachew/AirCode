@@ -18,7 +18,7 @@
   --error:     #f87171;
   --border:    #2d2050;
   --radius:    16px;
-  --shadow:    0 4px 24px rgba(0,0,0,0.4);
+--shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
 }
 
 /* ─── Light Mode ─────────────────────────────────────── */
@@ -33,7 +33,7 @@
   --success:   #059669;
   --error:     #dc2626;
   --border:    #ddd6fe;
-  --shadow:    0 4px 24px rgba(124,58,237,0.08);
+  
 }
 
 /* ─── Base ───────────────────────────────────────────── */
@@ -44,7 +44,7 @@ html, body {
   font-family: system-ui, -apple-system, sans-serif;
   font-size: 16px;
   line-height: 1.6;
-  transition: background 0.3s, color 0.3s;
+transition: background-color 0.3s ease, color 0.3s ease;
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior-y: none;
 }
@@ -139,13 +139,11 @@ html, body {
 }
 
 .app-name {
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  background: linear-gradient(90deg, #c084fc, #60a5fa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+    color: #a78bfa;
+    background: linear-gradient(90deg, #c084fc, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .top-subtitle {
