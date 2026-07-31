@@ -36,7 +36,7 @@ function showLoginForm() {
       <label>Password</label>
     <div class="password-wrapper">
   <input class="form-input" type="password" id="input-password" placeholder="Your password" />
-  <button type="button" id="toggle-password">👁</button>
+  <button type="button" id="toggle-password">Show</button>
 </div>
     </div>
     <button class="btn-primary" id="btn-login">Log In</button>
@@ -91,19 +91,20 @@ function showSignupForm() {
       <label>Password</label>
  <div class="password-wrapper">
   <input class="form-input" type="password" id="signup-password" placeholder="Min 6 characters">
-  <button type="button" id="toggle-signup-password">👁</button>
+  <button type="button" id="toggle-signup-password">Show</button>
 </div>
     </div>
     <div class="form-group">
       <label>Confirm Password</label>
-      <div class="password-wrapper">
+   <div class="password-wrapper">
   <input 
+    class="form-input"
     type="password" 
     id="signup-confirm-password" 
     placeholder="Confirm password"
   >
   <button type="button" onclick="togglePassword('signup-confirm-password')">
-    👁
+    Show
   </button>
 </div>
     </div>
