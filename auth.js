@@ -36,7 +36,7 @@ function showLoginForm() {
       <label>Password</label>
     <div class="password-wrapper">
   <input class="form-input" type="password" id="input-password" placeholder="Your password" />
-  <button type="button" id="toggle-password">Show</button>
+  <button type="button" id="toggle-password">👁</button>
 </div>
     </div>
     <button class="btn-primary" id="btn-login">Log In</button>
@@ -89,11 +89,23 @@ function showSignupForm() {
     </div>
     <div class="form-group">
       <label>Password</label>
-      <input class="form-input" type="password" id="input-password" placeholder="Min 6 characters" />
+ <div class="password-wrapper">
+  <input class="form-input" type="password" id="signup-password" placeholder="Min 6 characters">
+  <button type="button" id="toggle-signup-password">👁</button>
+</div>
     </div>
     <div class="form-group">
       <label>Confirm Password</label>
-      <input class="form-input" type="password" id="input-confirm" placeholder="Repeat password" />
+      <div class="password-wrapper">
+  <input 
+    type="password" 
+    id="signup-confirm-password" 
+    placeholder="Confirm password"
+  >
+  <button type="button" onclick="togglePassword('signup-confirm-password')">
+    👁
+  </button>
+</div>
     </div>
     <button class="btn-primary" id="btn-signup">Create Account</button>
     <div class="auth-switch">
@@ -102,6 +114,18 @@ function showSignupForm() {
   `;
 
   document.getElementById('btn-signup').addEventListener('click', handleSignup);
+  document.getElementById('toggle-signup-password').addEventListener('click', () => {
+  const input = document.getElementById('signup-password');
+  const button = document.getElementById('toggle-signup-password');
+
+  if (input.type === "password") {
+    input.type = "text";
+    button.textContent = "Hide";
+  } else {
+    input.type = "password";
+    button.textContent = "👁";
+  }
+});
   document.getElementById('go-login').addEventListener('click', showLoginForm);
 
   initGoogleSignIn();
@@ -136,8 +160,8 @@ function handleLogin() {
 // ─── Handle Signup ────────────────────────────────────
 function handleSignup() {
   const email = document.getElementById('input-email').value.trim();
-  const password = document.getElementById('input-password').value;
-  const confirm = document.getElementById('input-confirm').value;
+ const password = document.getElementById('signup-password').value;
+const confirm = document.getElementById('signup-confirm-password').value;
 
   if (!email || !password || !confirm) {
     showAuthError('Please fill in all fields.');
@@ -188,7 +212,15 @@ function showAuthError(message) {
   el.textContent = message;
   el.style.display = 'block';
 }
+function togglePassword(id) {
+  const input = document.getElementById(id);
 
+  if (input.type === "password") {
+    input.type = "text";
+  } else {
+    input.type = "password";
+  }
+}
 // ─── Google Sign-In (optional, requires internet) ─────
 
 const GOOGLE_CLIENT_ID = '494701092193-4l7mi2asbr57utr9ucj0p28ql1cp8lnf.apps.googleusercontent.com';
