@@ -170,8 +170,8 @@ function showAuthError(message) {
 }
 
 // ─── Google Sign-In (optional, requires internet) ─────
-// Set this after creating a free OAuth Client ID at console.cloud.google.com
-const GOOGLE_CLIENT_ID = 'YOUR_CLIENT_ID.apps.googleusercontent.com'; // ← replace before demo
+
+const GOOGLE_CLIENT_ID = '494701092193-4l7mi2asbr57utr9ucj0p28ql1cp8lnf.apps.googleusercontent.com';
 
 function initGoogleSignIn() {
   const container = document.getElementById('google-btn-container');
