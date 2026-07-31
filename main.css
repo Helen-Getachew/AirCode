@@ -928,3 +928,17 @@ button:active {
     display: none;
   }
 }
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper button {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+}
