@@ -31,15 +31,21 @@ if ('serviceWorker' in navigator) {
 window.addEventListener('DOMContentLoaded', () => {
   initTheme();
 
-getSession().then(session => {
-  if (session) {
-    updateStreak();
-    playSplitTransition(() => navigateTo('home'));
-  } else {
+  getSession().then(session => {
+    if (session && session.email) {
+      console.log("Restored session:", session.email);
+
+      updateStreak();
+      navigateTo('home');
+
+    } else {
+      console.log("No saved session");
+      navigateTo('login');
+    }
+  }).catch(error => {
+    console.error("Session error:", error);
     navigateTo('login');
-  }
-}).catch(() => {
-  navigateTo('login');
+  });
 });
 // ─── Online / Offline Status ─────────────────────
 
