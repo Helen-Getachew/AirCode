@@ -1,5 +1,3 @@
-// lessons.js — all course content for Trace Code
-
 const SUBJECTS = [
   { id: 'html', name: 'HTML', icon: '🌐', description: 'Structure of the web' },
   { id: 'css', name: 'CSS', icon: '🎨', description: 'Style and layout' },
@@ -827,9 +825,274 @@ const COURSES = {
         { question: 'What is on every project HTML checklist?', options: ['Tables for layout', 'Multiple h1 tags', 'alt on every image', 'Inline all CSS'], correct: 2 }
       ]
     }
+  },
+  css: {
+    beginner: {
+      lessons: [
+        {
+          id: 'css-beg-01',
+          title: 'The Anatomy of a CSS Rule',
+          summary: 'Learn what CSS is and how a style rule is built',
+          content: [
+            { type: 'text', value: 'CSS stands for Cascading Style Sheets. HTML builds the structure of a page — CSS controls how it looks: colors, fonts, spacing, sizing, and layout.' },
+            { type: 'text', value: 'Think of it like this: if HTML is the skeleton of a webpage, CSS is the skin, clothes, and style that make it presentable.' },
+            { type: 'heading', value: 'The Three Parts of a Rule' },
+            { type: 'code', value: 'selector {\n  property: value;\n}\n\n/* Example */\np {\n  color: blue;\n  font-size: 18px;\n}' },
+            { type: 'text', value: 'A CSS rule has a selector (what to style), and a declaration block wrapped in curly braces. Inside, each declaration is a property paired with a value, separated by a colon, and ended with a semicolon.' },
+            { type: 'text', value: 'The selector "p" above targets every paragraph element on the page. Every declaration needs that trailing semicolon — forgetting it is the most common beginner mistake, and it can break every rule that comes after it.' },
+            { type: 'heading', value: 'Comments in CSS' },
+            { type: 'code', value: '/* This is a CSS comment.\n   It can span multiple lines.\n   The browser ignores everything in here. */\n\nh1 {\n  color: red; /* you can also comment at the end of a line */\n}' },
+            { type: 'text', value: 'Try it yourself: open any HTML page, add a <style> block, and write "body { background-color: lightyellow; }" — reload and watch the whole page change color. Small experiments like this are the fastest way to learn CSS.' }
+          ],
+          quiz: [
+            { question: 'What does CSS stand for?', options: ['Creative Style Sheets', 'Cascading Style Sheets', 'Computer Styled Sections', 'Colorful Style Syntax'], correct: 1, explanation: 'CSS stands for Cascading Style Sheets — the language used to style and lay out HTML documents.' },
+            { question: 'What are the two main parts inside a CSS declaration block?', options: ['Tag and attribute', 'Property and value', 'Selector and comment', 'Element and class'], correct: 1, explanation: 'Each declaration pairs a property (like color) with a value (like blue), separated by a colon and ended with a semicolon.' },
+            { question: 'What happens if you forget a semicolon at the end of a declaration?', options: ['Nothing, it is optional', 'The page stops loading entirely', 'It can break that declaration and the ones after it', 'The browser adds one automatically every time'], correct: 2, explanation: 'The semicolon separates declarations. Missing one can cause the browser to misread the next declaration, breaking your styling.' }
+          ]
+        },
+        {
+          id: 'css-beg-02',
+          title: 'Three Ways to Add CSS',
+          summary: 'Inline, internal, and external stylesheets',
+          content: [
+            { type: 'text', value: 'There are three ways to apply CSS to an HTML page: inline, internal (embedded), and external. Each has its place, but professional projects almost always use external CSS.' },
+            { type: 'heading', value: '1. Inline CSS' },
+            { type: 'code', value: '<p style="color: red; font-size: 20px;">This paragraph is styled inline.</p>' },
+            { type: 'text', value: 'Inline CSS is written directly in the style attribute of an element. It only affects that one element and is the hardest to maintain — avoid it except for quick tests or dynamic styles set by JavaScript.' },
+            { type: 'heading', value: '2. Internal (Embedded) CSS' },
+            { type: 'code', value: '<head>\n  <style>\n    p {\n      color: red;\n      font-size: 20px;\n    }\n  </style>\n</head>' },
+            { type: 'text', value: 'Internal CSS lives inside a <style> tag in the <head> of the document. It affects the whole page but only that one file — useful for single-page demos.' },
+            { type: 'heading', value: '3. External CSS' },
+            { type: 'code', value: '<!-- in index.html -->\n<head>\n  <link rel="stylesheet" href="style.css">\n</head>\n\n/* in style.css */\np {\n  color: red;\n  font-size: 20px;\n}' },
+            { type: 'text', value: 'External CSS lives in its own .css file, linked with a <link> tag. This is the industry standard: one stylesheet can style every page on a site, and your HTML stays clean and readable.' }
+          ],
+          quiz: [
+            { question: 'Which method applies a style to only one single element?', options: ['External CSS', 'Internal CSS', 'Inline CSS', 'Global CSS'], correct: 2, explanation: 'Inline CSS is written in the style attribute of one element and affects only that element.' },
+            { question: 'Which tag links an external stylesheet to an HTML page?', options: ['<style>', '<script>', '<css>', '<link>'], correct: 3, explanation: 'The <link rel="stylesheet" href="..."> tag, placed in the <head>, connects an external .css file to the page.' },
+            { question: 'Why do professionals prefer external CSS?', options: ['It loads slower on purpose', 'One file can style every page on a site, keeping code organized', 'It only works with JavaScript', 'It cannot be cached by the browser'], correct: 1, explanation: 'External stylesheets separate structure (HTML) from style (CSS), can be reused across every page, and can be cached by the browser for faster loads.' }
+          ]
+        },
+        {
+          id: 'css-beg-03',
+          title: 'Selectors: Element, Class, and ID',
+          summary: 'Target exactly the HTML you want to style',
+          content: [
+            { type: 'text', value: 'A selector tells the browser which element(s) a rule applies to. The three you will use constantly are the element selector, the class selector, and the id selector.' },
+            { type: 'heading', value: 'Element Selector' },
+            { type: 'code', value: 'p {\n  color: darkslategray;\n}' },
+            { type: 'text', value: 'Targets every element of that type on the page — every <p> in this case.' },
+            { type: 'heading', value: 'Class Selector' },
+            { type: 'code', value: '.highlight {\n  background-color: yellow;\n}\n\n<!-- in your HTML -->\n<p class="highlight">This is highlighted</p>\n<span class="highlight">So is this</span>' },
+            { type: 'text', value: 'A class starts with a dot (.) and can be reused on as many elements as you like — perfect for a style you want to apply in multiple places.' },
+            { type: 'heading', value: 'ID Selector' },
+            { type: 'code', value: '#main-title {\n  font-size: 36px;\n}\n\n<!-- in your HTML -->\n<h1 id="main-title">Welcome</h1>' },
+            { type: 'text', value: 'An id starts with a hash (#) and should be used only once per page — it is meant to target one unique element.' },
+            { type: 'heading', value: 'Grouping and the Universal Selector' },
+            { type: 'code', value: '/* Grouping: style several selectors at once */\nh1, h2, h3 {\n  font-family: sans-serif;\n}\n\n/* Universal selector: every element on the page */\n* {\n  margin: 0;\n  padding: 0;\n}' },
+            { type: 'text', value: 'A comma lets you apply the same declarations to several selectors without repeating yourself. The universal selector (*) is often used at the top of a stylesheet to reset default spacing.' }
+          ],
+          quiz: [
+            { question: 'Which symbol starts a class selector?', options: ['# (hash)', '. (dot)', '* (asterisk)', '@ (at sign)'], correct: 1, explanation: 'Class selectors start with a dot, like .highlight, and can be reused on many elements.' },
+            { question: 'Which symbol starts an id selector?', options: ['. (dot)', '# (hash)', '& (ampersand)', '% (percent)'], correct: 1, explanation: 'ID selectors start with a hash, like #main-title, and should target only one element per page.' },
+            { question: 'How many times should the same id be used on one page?', options: ['As many times as needed', 'Exactly once', 'Exactly twice', 'It does not matter'], correct: 1, explanation: 'An id is meant to be unique — it should identify exactly one element on the page.' },
+            { question: 'What does a comma do between selectors, like "h1, h2 { }"?', options: ['Creates an error', 'Selects h1 elements only', 'Applies the same rule to every selector listed', 'Nests h2 inside h1'], correct: 2, explanation: 'A comma groups selectors together so they all receive the same set of declarations, avoiding repetition.' }
+          ]
+        },
+        {
+          id: 'css-beg-04',
+          title: 'Colors and Backgrounds',
+          summary: 'Style text and backgrounds with color values',
+          content: [
+            { type: 'text', value: 'Color is one of the first things you will control with CSS. The two most common properties are color (text color) and background-color (the background behind an element).' },
+            { type: 'code', value: 'h1 {\n  color: crimson;\n  background-color: black;\n}' },
+            { type: 'heading', value: 'Ways to Write a Color' },
+            { type: 'text', value: 'CSS accepts several formats for the same color: a named keyword, a hex code, rgb(), or hsl(). All four lines below produce the exact same shade of blue.' },
+            { type: 'code', value: 'p { color: blue; }\np { color: #0000ff; }\np { color: rgb(0, 0, 255); }\np { color: hsl(240, 100%, 50%); }' },
+            { type: 'text', value: 'Named keywords (like red, blue, tomato) are the easiest to read. Hex codes (#rrggbb) and rgb() are the most common in real projects because they give you precise control over the exact shade.' },
+            { type: 'heading', value: 'Transparency with rgba()' },
+            { type: 'code', value: '.overlay {\n  background-color: rgba(0, 0, 0, 0.5); /* 50% see-through black */\n}' },
+            { type: 'text', value: 'rgba() adds a fourth value, alpha, from 0 (fully transparent) to 1 (fully solid) — useful for overlays, shadows, and hover effects.' }
+          ],
+          quiz: [
+            { question: 'Which property changes the color of text?', options: ['background-color', 'text-color', 'color', 'font-color'], correct: 2, explanation: 'The color property sets the color of an element\'s text content.' },
+            { question: 'Which of these is a valid hex color code?', options: ['color(255,0,0)', '#ff0000', 'hex-red', 'rgb-red'], correct: 1, explanation: 'Hex codes start with a # followed by six characters representing red, green, and blue, like #ff0000 for red.' },
+            { question: 'What does the fourth value in rgba() control?', options: ['Red intensity', 'Brightness', 'Transparency (alpha)', 'Saturation'], correct: 2, explanation: 'The alpha value in rgba() ranges from 0 (fully transparent) to 1 (fully opaque), controlling how see-through the color is.' }
+          ]
+        },
+        {
+          id: 'css-beg-05',
+          title: 'The Box Model',
+          summary: 'Every element is a box — content, padding, border, and margin',
+          content: [
+            { type: 'text', value: 'Every single element on a webpage is rendered as a rectangular box. Understanding the box model is the single most important CSS concept for layout — almost every spacing bug traces back to it.' },
+            { type: 'heading', value: 'The Four Layers' },
+            { type: 'text', value: 'From the inside out: content (the text or image itself), padding (space between the content and the border), border (the line around the padding), and margin (space outside the border, separating this box from others).' },
+            { type: 'code', value: '.card {\n  width: 300px;\n  padding: 20px;\n  border: 2px solid gray;\n  margin: 16px;\n}' },
+            { type: 'text', value: 'By default, width only sets the content area — the padding and border are added on top of it, so this .card box actually takes up more than 300px of total space.' },
+            { type: 'heading', value: 'box-sizing: border-box' },
+            { type: 'code', value: '* {\n  box-sizing: border-box;\n}' },
+            { type: 'text', value: 'This one declaration changes the math: width now includes the padding and border, so the box stays exactly the size you set. Most developers add this to every project — it makes layouts far more predictable.' },
+            { type: 'heading', value: 'Shorthand for Spacing' },
+            { type: 'code', value: '/* top right bottom left, clockwise from the top */\nmargin: 10px 20px 10px 20px;\n\n/* top-bottom  left-right */\npadding: 10px 20px;\n\n/* all four sides equal */\nmargin: 12px;' },
+          ],
+          quiz: [
+            { question: 'In order from the inside out, what are the four layers of the box model?', options: ['Margin, border, padding, content', 'Content, padding, border, margin', 'Border, content, margin, padding', 'Padding, content, border, margin'], correct: 1, explanation: 'From the center outward: content, then padding, then border, then margin.' },
+            { question: 'By default, does the width property include padding and border?', options: ['Yes, always', 'No — they are added on top of the width', 'Only the border is included', 'Only the padding is included'], correct: 1, explanation: 'By default (content-box sizing), width sets only the content area. Padding and border add extra size on top of it.' },
+            { question: 'What does box-sizing: border-box do?', options: ['Removes all borders', 'Makes width include padding and border', 'Adds a border to every element', 'Hides overflowing content'], correct: 1, explanation: 'border-box makes the width and height you set include the padding and border, keeping the total box size predictable.' },
+            { question: 'In "margin: 10px 20px 10px 20px;", what order are the four values applied?', options: ['Left, top, right, bottom', 'Top, right, bottom, left', 'Random order', 'Top, bottom, left, right'], correct: 1, explanation: 'The four-value shorthand always goes clockwise starting from the top: top, right, bottom, left.' }
+          ]
+        },
+        {
+          id: 'css-beg-06',
+          title: 'Text and Font Styling',
+          summary: 'Control typography: font, size, weight, and alignment',
+          content: [
+            { type: 'text', value: 'Typography is a huge part of good design. CSS gives you fine control over how text looks and reads.' },
+            { type: 'code', value: 'p {\n  font-family: "Segoe UI", Arial, sans-serif;\n  font-size: 16px;\n  font-weight: bold;\n  font-style: italic;\n  text-align: center;\n  text-decoration: underline;\n  line-height: 1.6;\n}' },
+            { type: 'heading', value: 'Font Stacks' },
+            { type: 'text', value: 'font-family accepts a list of fonts, separated by commas — the browser tries each one in order and falls back to the next if a font is not installed. Always end the list with a generic family like sans-serif, serif, or monospace as a safety net.' },
+            { type: 'heading', value: 'Common Text Properties' },
+            { type: 'text', value: 'font-size sets the text size (commonly in px or rem). font-weight controls thickness (normal, bold, or a number like 400/700). text-align controls horizontal alignment (left, center, right, justify). line-height controls the vertical spacing between lines of text, and a value like 1.5 (no unit) usually reads best.' },
+            { type: 'text', value: 'Try it yourself: take a paragraph of body text and set line-height to 1.6 and font-size to 18px — notice how much easier long text becomes to read compared to the browser default.' }
+          ],
+          quiz: [
+            { question: 'What is the purpose of listing several fonts in font-family, separated by commas?', options: ['To apply all fonts at once', 'To give the browser fallback options if a font is unavailable', 'To make text bold', 'To increase file size on purpose'], correct: 1, explanation: 'The browser tries each font left to right and uses the first one available, which is why a generic fallback like sans-serif should always be last.' },
+            { question: 'Which property controls the space between lines of text?', options: ['text-spacing', 'line-height', 'letter-spacing', 'text-align'], correct: 1, explanation: 'line-height controls the vertical space between lines within a block of text, which greatly affects readability.' },
+            { question: 'Which value of text-align stretches text so both edges line up, like a newspaper column?', options: ['center', 'left', 'justify', 'stretch'], correct: 2, explanation: 'text-align: justify spreads words so both the left and right edges of the text are aligned evenly.' }
+          ]
+        },
+        {
+          id: 'css-beg-07',
+          title: 'Width, Height, and Display',
+          summary: 'Understand block, inline, and inline-block behavior',
+          content: [
+            { type: 'text', value: 'Every HTML element has a default display type that controls how it behaves in the flow of a page. The three basics are block, inline, and inline-block.' },
+            { type: 'heading', value: 'Block Elements' },
+            { type: 'text', value: 'Block elements (like <div>, <p>, and <h1>) always start on a new line and stretch to fill the full width available. You can set width and height on them freely.' },
+            { type: 'heading', value: 'Inline Elements' },
+            { type: 'text', value: 'Inline elements (like <span>, <a>, and <strong>) sit in the flow of text, only take up as much width as their content, and do not start a new line. Setting width or height on an inline element has no effect.' },
+            { type: 'heading', value: 'Inline-Block' },
+            { type: 'code', value: '.tag {\n  display: inline-block;\n  width: 100px;\n  height: 40px;\n  background-color: teal;\n}' },
+            { type: 'text', value: 'inline-block gives you the best of both: it sits next to other elements like inline content, but respects width and height like a block element. It is commonly used for buttons, badges, and navigation items.' },
+            { type: 'heading', value: 'Hiding Elements' },
+            { type: 'code', value: '.hidden {\n  display: none; /* removed entirely, takes up no space */\n}' }
+          ],
+          quiz: [
+            { question: 'What does a block element do by default?', options: ['Sits inline with text', 'Starts on a new line and takes the full available width', 'Has no width or height', 'Is invisible until styled'], correct: 1, explanation: 'Block-level elements always start on a new line and stretch to fill the width of their container.' },
+            { question: 'Can you set a width on a normal inline element and have it take effect?', options: ['Yes, always', 'No — width and height are ignored on inline elements', 'Only in Chrome', 'Only if it has an id'], correct: 1, explanation: 'Inline elements size themselves to their content and ignore width/height unless their display is changed.' },
+            { question: 'What makes inline-block different from a regular inline element?', options: ['It hides the element', 'It respects width and height while still sitting inline with other content', 'It always breaks onto a new line', 'It removes all padding'], correct: 1, explanation: 'inline-block combines inline flow (sitting next to other elements) with block-like control over width and height.' },
+            { question: 'What does display: none do to an element?', options: ['Makes it transparent', 'Removes it completely — it takes up no space', 'Makes it gray', 'Moves it off screen but keeps its space'], correct: 1, explanation: 'display: none removes the element from the page entirely, as if it were never there, freeing up its space.' }
+          ]
+        },
+        {
+          id: 'css-beg-08',
+          title: 'Borders and Border Radius',
+          summary: 'Add outlines and rounded corners to elements',
+          content: [
+            { type: 'text', value: 'A border is a line drawn around the edge of an element, right between the padding and the margin.' },
+            { type: 'code', value: '.box {\n  border-width: 2px;\n  border-style: solid;\n  border-color: navy;\n}\n\n/* shorthand — same result in one line */\n.box {\n  border: 2px solid navy;\n}' },
+            { type: 'text', value: 'A border needs all three pieces to show up: width, style, and color. Without border-style set to something like solid, dashed, or dotted, no border appears at all — even if width and color are set.' },
+            { type: 'heading', value: 'Styling One Side' },
+            { type: 'code', value: '.card {\n  border-bottom: 3px solid orange;\n}' },
+            { type: 'heading', value: 'Border Radius' },
+            { type: 'code', value: '.rounded {\n  border-radius: 12px;\n}\n\n.pill-button {\n  border-radius: 999px; /* fully rounded ends */\n}\n\n.circle {\n  width: 80px;\n  height: 80px;\n  border-radius: 50%; /* turns a square into a perfect circle */\n}' },
+            { type: 'text', value: 'border-radius rounds the corners of a box. A value equal to half the element\'s width and height (or 50%) turns a square element into a perfect circle — a common trick for profile pictures and avatars.' }
+          ],
+          quiz: [
+            { question: 'Which three properties does a visible border need?', options: ['Width, radius, and color', 'Width, style, and color', 'Style, margin, and padding', 'Color, radius, and shadow'], correct: 1, explanation: 'A border needs border-width, border-style (like solid or dashed), and border-color to actually appear.' },
+            { question: 'What happens if you set border-width and border-color but forget border-style?', options: ['A solid border shows anyway', 'No border shows at all', 'The browser throws an error', 'A dotted border shows by default'], correct: 1, explanation: 'Without a border-style, the browser has no line pattern to draw, so no border appears even with width and color set.' },
+            { question: 'What border-radius value turns a square box into a perfect circle?', options: ['0', '10px', '50%', '100px'], correct: 2, explanation: 'Setting border-radius to 50% on an element with equal width and height rounds it into a perfect circle.' }
+          ]
+        },
+        {
+          id: 'css-beg-09',
+          title: 'CSS Units: px, %, em, and rem',
+          summary: 'Choose the right unit for sizing and spacing',
+          content: [
+            { type: 'text', value: 'CSS gives you several units to measure size. Choosing the right one makes your layouts more flexible and easier to maintain.' },
+            { type: 'heading', value: 'px — Pixels (Absolute)' },
+            { type: 'text', value: 'A pixel is a fixed, absolute unit. "font-size: 16px" is always 16px, no matter what. Pixels are precise and predictable, but do not automatically scale if a user changes their browser\'s font size settings.' },
+            { type: 'heading', value: '% — Percentage (Relative to Parent)' },
+            { type: 'code', value: '.sidebar {\n  width: 25%; /* a quarter of its parent container\'s width */\n}' },
+            { type: 'text', value: 'A percentage is relative to the size of the parent element — useful for building flexible, responsive layouts.' },
+            { type: 'heading', value: 'em — Relative to the Parent\'s Font Size' },
+            { type: 'text', value: '1em equals the current font-size of the element\'s parent. If a parent has font-size: 16px, then 2em inside it equals 32px. This can compound and get confusing when em is nested many levels deep.' },
+            { type: 'heading', value: 'rem — Relative to the Root Font Size' },
+            { type: 'code', value: 'html {\n  font-size: 16px; /* the root */\n}\n\nh1 {\n  font-size: 2rem; /* always 32px, no matter where h1 is nested */\n}' },
+            { type: 'text', value: 'rem stands for "root em" — it is always relative to the font-size set on the <html> element, never to a nearby parent. This makes it predictable and is why most developers prefer rem for font sizes and spacing.' }
+          ],
+          quiz: [
+            { question: 'Which unit is a fixed, absolute size that never scales relative to anything else?', options: ['em', 'rem', 'px', '%'], correct: 2, explanation: 'A pixel (px) is an absolute unit — 16px is always 16px, regardless of parent elements or the page\'s root font size.' },
+            { question: 'What is a percentage size relative to?', options: ['The browser window only', 'The root html element', 'Its parent element', 'The font-size of the body only'], correct: 2, explanation: 'A percentage value is calculated relative to the corresponding size of the parent element.' },
+            { question: 'What makes rem different from em?', options: ['rem is always relative to the root html font-size, while em is relative to the parent', 'rem is an absolute unit like px', 'em only works on headings', 'There is no difference'], correct: 0, explanation: 'em is relative to the parent\'s font-size and can compound when nested, while rem is always relative to the single root font-size, making it more predictable.' }
+          ]
+        },
+        {
+          id: 'css-beg-10',
+          title: 'The Cascade and Specificity',
+          summary: 'Understand which rule wins when styles conflict',
+          content: [
+            { type: 'text', value: 'CSS stands for Cascading Style Sheets — the "cascading" part describes the rules the browser uses to decide which style wins when more than one rule targets the same element.' },
+            { type: 'heading', value: 'Specificity: Who Wins?' },
+            { type: 'text', value: 'From weakest to strongest: element selectors (like p) are the weakest, class selectors (like .highlight) are stronger, id selectors (like #title) are stronger still, and inline styles (style="...") beat almost everything.' },
+            { type: 'code', value: 'p { color: black; }        /* weakest */\n.highlight { color: green; } /* beats element selector */\n#title { color: purple; }   /* beats class selector */\n\n<p id="title" class="highlight">What color am I?</p>\n<!-- Answer: purple. The id selector wins. -->' },
+            { type: 'heading', value: 'Order Matters Too' },
+            { type: 'text', value: 'When two selectors have equal specificity, the one that appears later in the stylesheet wins. This is the "cascade" — later rules override earlier ones of the same strength.' },
+            { type: 'heading', value: 'The !important Escape Hatch' },
+            { type: 'code', value: 'p {\n  color: red !important;\n}' },
+            { type: 'text', value: '!important overrides normal specificity rules and almost always wins. It is tempting to use, but it makes stylesheets hard to debug and maintain — treat it as a last resort, not a habit.' }
+          ],
+          quiz: [
+            { question: 'From weakest to strongest, which order is correct?', options: ['ID, class, element', 'Element, class, ID', 'Class, ID, element', 'ID, element, class'], correct: 1, explanation: 'Element selectors are weakest, class selectors are stronger, and ID selectors are stronger still. Inline styles are stronger than all of them.' },
+            { question: 'If a p element has both a matching class rule and a matching id rule with different colors, which one is applied?', options: ['The class rule, always', 'The one written first', 'The id rule, because it is more specific', 'Both are blended together'], correct: 2, explanation: 'An id selector has higher specificity than a class selector, so its declaration wins regardless of order.' },
+            { question: 'When two rules have equal specificity, which one wins?', options: ['The shorter one', 'The one that appears later in the CSS', 'The one that appears earlier in the CSS', 'Neither applies'], correct: 1, explanation: 'When specificity is tied, the cascade falls back to source order — the last rule declared wins.' },
+            { question: 'Why should !important generally be avoided?', options: ['It is not supported by modern browsers', 'It makes styles load slower', 'It overrides normal specificity and makes stylesheets hard to debug', 'It only works on ids'], correct: 2, explanation: '!important short-circuits the normal cascade, which can make it very hard to track down why a style is or is not applying later on.' }
+          ]
+        }
+      ],
+      exam: [
+        { question: 'What does CSS stand for?', options: ['Creative Style Sheets', 'Cascading Style Sheets', 'Computer Styled Sections', 'Colorful Style Syntax'], correct: 1 },
+        { question: 'What are the two parts of a declaration inside a rule?', options: ['Tag and attribute', 'Property and value', 'Selector and comment', 'Element and class'], correct: 1 },
+        { question: 'Which tag links an external stylesheet to an HTML page?', options: ['<style>', '<script>', '<css>', '<link>'], correct: 3 },
+        { question: 'Which method applies styling to only one single element?', options: ['External CSS', 'Internal CSS', 'Inline CSS', 'Global CSS'], correct: 2 },
+        { question: 'Which symbol starts a class selector?', options: ['# (hash)', '. (dot)', '* (asterisk)', '@ (at sign)'], correct: 1 },
+        { question: 'Which symbol starts an id selector?', options: ['. (dot)', '# (hash)', '& (ampersand)', '% (percent)'], correct: 1 },
+        { question: 'Which property changes the color of text?', options: ['background-color', 'text-color', 'color', 'font-color'], correct: 2 },
+        { question: 'Which is a valid hex color code?', options: ['color(255,0,0)', '#ff0000', 'hex-red', 'rgb-red'], correct: 1 },
+        { question: 'In order from the inside out, what are the four layers of the box model?', options: ['Margin, border, padding, content', 'Content, padding, border, margin', 'Border, content, margin, padding', 'Padding, content, border, margin'], correct: 1 },
+        { question: 'What does box-sizing: border-box do?', options: ['Removes all borders', 'Makes width include padding and border', 'Adds a border to every element', 'Hides overflowing content'], correct: 1 },
+        { question: 'Which property controls the space between lines of text?', options: ['text-spacing', 'line-height', 'letter-spacing', 'text-align'], correct: 1 },
+        { question: 'What does a block element do by default?', options: ['Sits inline with text', 'Starts on a new line and takes full width', 'Has no width or height', 'Is invisible until styled'], correct: 1 },
+        { question: 'What makes inline-block different from inline?', options: ['It hides the element', 'It respects width and height while sitting inline', 'It always breaks onto a new line', 'It removes all padding'], correct: 1 },
+        { question: 'What does display: none do?', options: ['Makes it transparent', 'Removes it completely from the page', 'Makes it gray', 'Moves it off screen but keeps its space'], correct: 1 },
+        { question: 'Which three properties does a visible border need?', options: ['Width, radius, and color', 'Width, style, and color', 'Style, margin, and padding', 'Color, radius, and shadow'], correct: 1 },
+        { question: 'What border-radius value makes a square a perfect circle?', options: ['0', '10px', '50%', '100px'], correct: 2 },
+        { question: 'Which unit is a fixed, absolute size?', options: ['em', 'rem', 'px', '%'], correct: 2 },
+        { question: 'What is rem always relative to?', options: ['The nearest parent element', 'The root html font-size', 'The browser window width', 'The body\'s padding'], correct: 1 },
+        { question: 'From weakest to strongest specificity, which order is correct?', options: ['ID, class, element', 'Element, class, ID', 'Class, ID, element', 'ID, element, class'], correct: 1 },
+        { question: 'Why should !important generally be avoided?', options: ['It is unsupported in modern browsers', 'It makes styles load slower', 'It overrides normal specificity and makes debugging hard', 'It only works on ids'], correct: 2 }
+      ]
+    }
   }
+
 };
 
+// ─── Helper Functions ─────────────────────────────────
+function getSubject(id) {
+  return SUBJECTS.find(s => s.id === id);
+}
+
+function getLessons(subject, level) {
+  return COURSES[subject]?.[level]?.lessons || [];
+}
+
+function getLesson(subject, level, lessonId) {
+  return getLessons(subject, level).find(l => l.id === lessonId);
+}
+
+function getExam(subject, level) {
+  return COURSES[subject]?.[level]?.exam || [];
+}
 // ─── Helper Functions ─────────────────────────────────
 function getSubject(id) {
   return SUBJECTS.find(s => s.id === id);
