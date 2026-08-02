@@ -1073,10 +1073,277 @@ const COURSES = {
         { question: 'Why should !important generally be avoided?', options: ['It is unsupported in modern browsers', 'It makes styles load slower', 'It overrides normal specificity and makes debugging hard', 'It only works on ids'], correct: 2 }
       ]
     }
+  },
+
+javascript: {
+    beginner: {
+      lessons: [
+        {
+          id: 'js-beg-01',
+          title: 'What is JavaScript?',
+          summary: 'Add JavaScript to a page and print your first output',
+          content: [
+            { type: 'text', value: 'JavaScript is the programming language of the web. If HTML is the structure and CSS is the style, JavaScript is the behavior — it makes pages interactive: clicking buttons, validating forms, updating content without reloading the page.' },
+            { type: 'heading', value: 'Adding JavaScript to a Page' },
+            { type: 'code', value: '<!-- Internal: inside a <script> tag -->\n<script>\n  console.log("Hello, world!");\n</script>\n\n<!-- External: in its own .js file -->\n<script src="app.js"></script>' },
+            { type: 'text', value: 'Just like CSS, JavaScript can be inline, internal (in a <script> tag), or external (in its own .js file). External is the standard for real projects — it keeps your HTML clean and lets the browser cache the file.' },
+            { type: 'heading', value: 'console.log()' },
+            { type: 'text', value: 'console.log() is the single most useful tool for learning and debugging JavaScript. It prints a value to the browser\'s console (open it with F12 or right-click → Inspect → Console) so you can see what your code is doing.' },
+            { type: 'code', value: 'console.log("Hello!");\nconsole.log(2 + 2);\nconsole.log("The answer is:", 42);' },
+            { type: 'heading', value: 'Statements and Semicolons' },
+            { type: 'text', value: 'JavaScript code is made of statements — instructions the browser runs one after another, top to bottom. Each statement usually ends with a semicolon. JavaScript can often infer where a statement ends without one, but writing the semicolon explicitly avoids subtle bugs and is considered best practice.' },
+            { type: 'heading', value: 'Comments' },
+            { type: 'code', value: '// This is a single-line comment\n\n/* This is a\n   multi-line comment */\n\nconsole.log("This line actually runs"); // comments can follow code too' },
+            { type: 'text', value: 'Try it yourself: open any webpage, open the browser console, and type console.log(1 + 1) — press Enter and see 2 appear instantly. The console is a live JavaScript sandbox.' }
+          ],
+          quiz: [
+            { question: 'What does JavaScript primarily add to a webpage?', options: ['Structure', 'Visual style', 'Interactive behavior', 'Search engine ranking'], correct: 2, explanation: 'HTML provides structure, CSS provides style, and JavaScript adds behavior and interactivity to a webpage.' },
+            { question: 'What does console.log() do?', options: ['Deletes a variable', 'Prints a value to the browser console', 'Creates a new webpage', 'Saves data permanently'], correct: 1, explanation: 'console.log() prints values to the browser\'s developer console — the most common tool for debugging and learning JavaScript.' },
+            { question: 'Which tag adds an external JavaScript file to a page?', options: ['<javascript src="app.js">', '<script src="app.js"></script>', '<js href="app.js">', '<link src="app.js">'], correct: 1, explanation: 'The <script src="..."></script> tag links an external JavaScript file. It can go in the <head> or before the closing </body> tag.' }
+          ]
+        },
+        {
+          id: 'js-beg-02',
+          title: 'Variables: let, const, and var',
+          summary: 'Store and label data so you can use it later',
+          content: [
+            { type: 'text', value: 'A variable is a named container for a value. Instead of retyping "John Smith" everywhere, you store it once in a variable and reuse the name.' },
+            { type: 'heading', value: 'Declaring a Variable' },
+            { type: 'code', value: 'let name = "John Smith";\nlet age = 25;\n\nconsole.log(name); // John Smith\nconsole.log(age);  // 25' },
+            { type: 'text', value: 'The = sign here is the assignment operator — it stores the value on the right into the variable on the left. This is different from math\'s "equals"; think of it as "gets set to".' },
+            { type: 'heading', value: 'let vs const' },
+            { type: 'code', value: 'let score = 0;\nscore = score + 10; // fine — let can be reassigned\n\nconst pi = 3.14159;\npi = 4; // Error! const cannot be reassigned' },
+            { type: 'text', value: 'Use const by default — it signals "this value never changes" and prevents accidental reassignment. Use let only when you know the value needs to change later, like a counter or a running total.' },
+            { type: 'heading', value: 'var — The Old Way' },
+            { type: 'text', value: 'var is the original way to declare variables, from before 2015. It still works, but has confusing scoping rules that cause bugs. Modern JavaScript uses let and const instead — you will rarely see var in new code.' },
+            { type: 'heading', value: 'Naming Rules' },
+            { type: 'code', value: 'let firstName = "Amara";   // camelCase — the JS convention\nlet _private = "secret";  // can start with underscore\nlet $element = null;      // can start with $\n\n// let 1stPlace = "gold";  // Error! cannot start with a number\n// let my-name = "Kal";    // Error! hyphens are not allowed' },
+            { type: 'text', value: 'Variable names can contain letters, digits, underscores, and dollar signs, but cannot start with a digit. JavaScript convention is camelCase: firstWordLowercase, restOfWordsCapitalized.' }
+          ],
+          quiz: [
+            { question: 'Which keyword should you use by default for a variable that will not be reassigned?', options: ['var', 'let', 'const', 'static'], correct: 2, explanation: 'const signals that a variable\'s value will not change. Use it by default, and switch to let only when reassignment is needed.' },
+            { question: 'What happens if you try to reassign a const variable?', options: ['It works normally', 'JavaScript throws an error', 'The value is ignored silently', 'It converts to let automatically'], correct: 1, explanation: 'Reassigning a const variable throws a TypeError. const variables must keep the same reference after declaration.' },
+            { question: 'Which of these is a valid JavaScript variable name?', options: ['1stPlace', 'my-name', 'firstName', 'my name'], correct: 2, explanation: 'firstName follows the rules: it starts with a letter and uses camelCase. Variable names cannot start with a digit, contain hyphens, or contain spaces.' },
+            { question: 'Why is var less commonly used in modern JavaScript?', options: ['It is slower', 'It has confusing scoping rules compared to let and const', 'It was removed from JavaScript', 'It only works with numbers'], correct: 1, explanation: 'var has function-level scoping and can be redeclared, which leads to subtle bugs. let and const use clearer block-level scoping.' }
+          ]
+        },
+        {
+          id: 'js-beg-03',
+          title: 'Data Types',
+          summary: 'The kinds of values JavaScript can store',
+          content: [
+            { type: 'text', value: 'Every value in JavaScript has a type. Knowing the basic types is essential — they behave differently in comparisons, math, and logic.' },
+            { type: 'heading', value: 'Primitive Types' },
+            { type: 'code', value: 'let name = "Amara";        // string — text, in quotes\nlet age = 25;              // number — integers and decimals\nlet isStudent = true;      // boolean — true or false\nlet nothing = null;        // null — intentionally empty\nlet notSet;                 // undefined — declared but no value yet' },
+            { type: 'heading', value: 'Checking a Type with typeof' },
+            { type: 'code', value: 'console.log(typeof "hello");   // "string"\nconsole.log(typeof 42);        // "number"\nconsole.log(typeof true);      // "boolean"\nconsole.log(typeof undefined); // "undefined"\nconsole.log(typeof null);      // "object" (a famous, long-standing JS quirk)' },
+            { type: 'heading', value: 'null vs undefined' },
+            { type: 'text', value: 'undefined means a variable was declared but never given a value — JavaScript sets this automatically. null means "empty on purpose" — you set it yourself to say "there is deliberately no value here".' },
+            { type: 'heading', value: 'Two Non-Primitive Types (Preview)' },
+            { type: 'code', value: 'let colors = ["red", "green", "blue"]; // array — an ordered list\nlet person = { name: "Amara", age: 25 }; // object — key/value pairs' },
+            { type: 'text', value: 'Arrays and objects are covered in their own lessons later, but it helps to recognize them now: square brackets [] make an array, curly braces {} make an object.' }
+          ],
+          quiz: [
+            { question: 'Which type represents text in JavaScript?', options: ['number', 'string', 'boolean', 'text'], correct: 1, explanation: 'A string represents text and is always written inside quotes, like "Hello".' },
+            { question: 'What does typeof true return?', options: ['"true"', '"boolean"', '"bool"', '"logical"'], correct: 1, explanation: 'typeof true returns the string "boolean" — booleans represent true/false values.' },
+            { question: 'What is the difference between null and undefined?', options: ['They are exactly the same', 'undefined means never assigned; null means intentionally set to empty', 'null is for numbers; undefined is for strings', 'undefined is newer than null'], correct: 1, explanation: 'undefined is JavaScript\'s automatic value for a variable with no assigned value. null is a value you deliberately assign to represent "no value".' },
+            { question: 'Which symbol is used to create an array?', options: ['{}', '()', '[]', '<>'], correct: 2, explanation: 'Square brackets [] create an array — an ordered list of values, like ["red", "green", "blue"].' }
+          ]
+        },
+        {
+          id: 'js-beg-04',
+          title: 'Operators',
+          summary: 'Do math, compare values, and combine logic',
+          content: [
+            { type: 'text', value: 'Operators let you calculate, compare, and combine values. JavaScript groups them into arithmetic, comparison, and logical operators.' },
+            { type: 'heading', value: 'Arithmetic Operators' },
+            { type: 'code', value: 'console.log(5 + 3);  // 8   addition\nconsole.log(5 - 3);  // 2   subtraction\nconsole.log(5 * 3);  // 15  multiplication\nconsole.log(5 / 3);  // 1.666... division\nconsole.log(5 % 3);  // 2   remainder (modulo)\nconsole.log(5 ** 2); // 25  exponent (5 squared)' },
+            { type: 'heading', value: 'Assignment Shortcuts' },
+            { type: 'code', value: 'let score = 10;\nscore += 5;  // same as: score = score + 5  → 15\nscore -= 3;  // same as: score = score - 3  → 12\nscore *= 2;  // same as: score = score * 2  → 24\n\nlet count = 0;\ncount++;     // same as: count = count + 1\ncount--;     // same as: count = count - 1' },
+            { type: 'heading', value: 'Comparison Operators' },
+            { type: 'code', value: 'console.log(5 == "5");   // true  — loosely equal (converts type first)\nconsole.log(5 === "5");  // false — strictly equal (checks type too)\nconsole.log(5 !== "5");  // true  — strictly not equal\nconsole.log(5 > 3);      // true\nconsole.log(5 <= 5);     // true' },
+            { type: 'text', value: 'Always prefer === and !== over == and !=. The triple-equals checks both value and type, avoiding the surprising type conversions that == performs behind the scenes.' },
+            { type: 'heading', value: 'Logical Operators' },
+            { type: 'code', value: 'console.log(true && false); // false — AND: both must be true\nconsole.log(true || false); // true  — OR: at least one must be true\nconsole.log(!true);         // false — NOT: flips the value' }
+          ],
+          quiz: [
+            { question: 'What does the % operator return?', options: ['A percentage', 'The remainder of a division', 'A rounded result', 'An exponent'], correct: 1, explanation: 'The modulo operator (%) returns the remainder after dividing two numbers. 5 % 3 is 2, because 3 goes into 5 once with 2 left over.' },
+            { question: 'Why is === generally preferred over ==?', options: ['It is shorter to type', 'It checks both value and type, avoiding unexpected conversions', 'It only works with numbers', 'It is faster in every case'], correct: 1, explanation: 'The strict equality operator (===) checks that both the value and type match, avoiding surprising results like 5 == "5" being true.' },
+            { question: 'What does score += 5 do?', options: ['Sets score to 5', 'Adds 5 to score and reassigns it', 'Compares score to 5', 'Divides score by 5'], correct: 1, explanation: 'score += 5 is shorthand for score = score + 5 — it adds 5 to the current value and stores the result back in score.' },
+            { question: 'What does true && false evaluate to?', options: ['true', 'false', 'undefined', 'An error'], correct: 1, explanation: 'The && (AND) operator only returns true if both sides are true. Since one side is false, the whole expression is false.' }
+          ]
+        },
+        {
+          id: 'js-beg-05',
+          title: 'Strings and Template Literals',
+          summary: 'Work with and combine text',
+          content: [
+            { type: 'text', value: 'Strings represent text. JavaScript gives you three ways to write them, plus powerful built-in tools for working with the text they contain.' },
+            { type: 'heading', value: 'Writing Strings' },
+            { type: 'code', value: 'let a = \'Single quotes\';\nlet b = "Double quotes";\nlet c = `Backticks (template literals)`;' },
+            { type: 'heading', value: 'Concatenation (the Old Way)' },
+            { type: 'code', value: 'let firstName = "Amara";\nlet age = 25;\n\nlet message = "Hello, " + firstName + "! You are " + age + " years old.";\nconsole.log(message);' },
+            { type: 'heading', value: 'Template Literals (the Modern Way)' },
+            { type: 'code', value: 'let firstName = "Amara";\nlet age = 25;\n\nlet message = `Hello, ${firstName}! You are ${age} years old.`;\nconsole.log(message);' },
+            { type: 'text', value: 'Template literals use backticks (`) instead of quotes. Anything inside ${ } is evaluated as JavaScript and inserted directly into the string — no messy + signs needed. They also support real line breaks.' },
+            { type: 'heading', value: 'Useful String Methods' },
+            { type: 'code', value: 'let text = "  Hello, World!  ";\n\nconsole.log(text.length);        // 19 — number of characters\nconsole.log(text.trim());        // "Hello, World!" — removes outer spaces\nconsole.log(text.toUpperCase());  // "  HELLO, WORLD!  "\nconsole.log(text.toLowerCase());  // "  hello, world!  "\nconsole.log(text.includes("World")); // true\nconsole.log(text.trim().slice(0, 5)); // "Hello" — extract characters' }
+          ],
+          quiz: [
+            { question: 'What character wraps a template literal?', options: ['Single quotes (\')', 'Double quotes (")', 'Backticks (`)', 'Square brackets ([])'], correct: 2, explanation: 'Template literals are wrapped in backticks (`), which allow ${} interpolation and multi-line strings.' },
+            { question: 'What does ${} do inside a template literal?', options: ['Adds a comment', 'Evaluates JavaScript and inserts the result into the string', 'Creates a new variable', 'Escapes a character'], correct: 1, explanation: '${expression} inside a template literal runs the JavaScript expression and inserts its result directly into the string.' },
+            { question: 'What does the .trim() string method do?', options: ['Deletes the string', 'Removes whitespace from the start and end of a string', 'Shortens a string to 10 characters', 'Converts to uppercase'], correct: 1, explanation: '.trim() removes leading and trailing whitespace, leaving whitespace in the middle of the string untouched.' },
+            { question: 'What does "hello".length return?', options: ['4', '5', '6', 'undefined'], correct: 1, explanation: '.length counts the number of characters in a string. "hello" has 5 characters: h-e-l-l-o.' }
+          ]
+        },
+        {
+          id: 'js-beg-06',
+          title: 'Conditionals: if, else, and switch',
+          summary: 'Make your code decide between paths',
+          content: [
+            { type: 'text', value: 'Conditionals let your program make decisions — run one block of code if something is true, and a different block if it is not.' },
+            { type: 'heading', value: 'if / else' },
+            { type: 'code', value: 'let age = 20;\n\nif (age >= 18) {\n  console.log("You can vote.");\n} else {\n  console.log("Too young to vote.");\n}' },
+            { type: 'heading', value: 'else if for Multiple Conditions' },
+            { type: 'code', value: 'let score = 75;\n\nif (score >= 90) {\n  console.log("Grade: A");\n} else if (score >= 80) {\n  console.log("Grade: B");\n} else if (score >= 70) {\n  console.log("Grade: C");\n} else {\n  console.log("Grade: F");\n}' },
+            { type: 'text', value: 'JavaScript checks each condition top to bottom and runs the first one that is true, then skips the rest — even if a later condition would also be true.' },
+            { type: 'heading', value: 'Truthy and Falsy' },
+            { type: 'text', value: 'Every value in JavaScript is either "truthy" or "falsy" when checked in a condition. The falsy values are: false, 0, "" (empty string), null, undefined, and NaN. Everything else — including "0" as a string and any non-empty string — is truthy.' },
+            { type: 'code', value: 'if ("") {\n  console.log("This never runs — empty string is falsy");\n}\n\nif ("hello") {\n  console.log("This runs — non-empty strings are truthy");\n}' },
+            { type: 'heading', value: 'switch Statements' },
+            { type: 'code', value: 'let day = "Mon";\n\nswitch (day) {\n  case "Mon":\n    console.log("Start of the week");\n    break;\n  case "Fri":\n    console.log("Almost the weekend");\n    break;\n  default:\n    console.log("A regular day");\n}' },
+            { type: 'text', value: 'switch compares one value against several possible cases. Do not forget break after each case — without it, execution "falls through" into the next case even if it does not match.' }
+          ],
+          quiz: [
+            { question: 'What runs if the if condition is false and there is an else block?', options: ['Nothing', 'The if block runs anyway', 'The else block', 'Both blocks run'], correct: 2, explanation: 'If the condition is false, the else block runs instead of the if block.' },
+            { question: 'Which of these values is falsy in JavaScript?', options: ['"0" (string)', '1', '""  (empty string)', '"false" (string)'], correct: 2, explanation: 'An empty string ("") is falsy. Non-empty strings, including "0" and "false" as text, are truthy.' },
+            { question: 'What happens if you forget break in a switch case?', options: ['A syntax error occurs', 'Execution falls through into the next case', 'The switch stops entirely', 'Nothing changes'], correct: 1, explanation: 'Without break, JavaScript continues executing the next case\'s code even if it does not match, which is called "fall-through".' },
+            { question: 'In a chain of else if statements, how many blocks can run?', options: ['All matching blocks', 'Only the first one whose condition is true', 'Only the last one', 'None, unless using switch'], correct: 1, explanation: 'JavaScript checks conditions top to bottom and stops at the first true one — later else if blocks are skipped even if they would also be true.' }
+          ]
+        },
+        {
+          id: 'js-beg-07',
+          title: 'Arrays',
+          summary: 'Store an ordered list of values',
+          content: [
+            { type: 'text', value: 'An array stores multiple values in a single variable, in order. Think of it as a numbered list where the numbering starts at 0.' },
+            { type: 'heading', value: 'Creating and Accessing an Array' },
+            { type: 'code', value: 'let fruits = ["apple", "banana", "cherry"];\n\nconsole.log(fruits[0]); // "apple"  — the first item\nconsole.log(fruits[1]); // "banana"\nconsole.log(fruits.length); // 3' },
+            { type: 'text', value: 'Arrays are zero-indexed — the first item is at position 0, not 1. fruits[3] does not exist here and returns undefined.' },
+            { type: 'heading', value: 'Modifying Arrays' },
+            { type: 'code', value: 'let fruits = ["apple", "banana"];\n\nfruits.push("cherry");   // adds to the end → ["apple", "banana", "cherry"]\nfruits.pop();             // removes from the end → ["apple", "banana"]\nfruits.unshift("mango");  // adds to the start → ["mango", "apple", "banana"]\nfruits.shift();            // removes from the start → ["apple", "banana"]' },
+            { type: 'heading', value: 'Looping Over an Array' },
+            { type: 'code', value: 'let fruits = ["apple", "banana", "cherry"];\n\nfruits.forEach(function(fruit) {\n  console.log(fruit);\n});\n// prints: apple, banana, cherry — one per line' },
+            { type: 'heading', value: 'Useful Array Methods' },
+            { type: 'code', value: 'let numbers = [1, 2, 3, 4, 5];\n\nconsole.log(numbers.includes(3));  // true\nconsole.log(numbers.indexOf(4));   // 3 — position of the value 4\nconsole.log(numbers.join(", "));   // "1, 2, 3, 4, 5" — array to string\nconsole.log(numbers.reverse());    // [5, 4, 3, 2, 1]' }
+          ],
+          quiz: [
+            { question: 'What position is the first item in an array?', options: ['1', '0', '-1', 'first'], correct: 1, explanation: 'Arrays are zero-indexed in JavaScript — the first item is at index 0, the second at index 1, and so on.' },
+            { question: 'Which method adds an item to the end of an array?', options: ['.pop()', '.push()', '.shift()', '.unshift()'], correct: 1, explanation: '.push() adds one or more items to the end of an array. .pop() removes the last item instead.' },
+            { question: 'What does .length return on an array?', options: ['The last index', 'The number of items in the array', 'The first item', 'The array\'s data type'], correct: 1, explanation: '.length returns the total count of items in the array — for ["a","b","c"], .length is 3.' },
+            { question: 'Which method removes the first item from an array?', options: ['.pop()', '.push()', '.shift()', '.slice()'], correct: 2, explanation: '.shift() removes and returns the first item of the array, shifting all remaining items down by one position.' }
+          ]
+        },
+        {
+          id: 'js-beg-08',
+          title: 'Loops: for and while',
+          summary: 'Repeat code without writing it over and over',
+          content: [
+            { type: 'text', value: 'Loops let you repeat a block of code multiple times — perfect for going through lists, counting, or repeating an action a set number of times.' },
+            { type: 'heading', value: 'The for Loop' },
+            { type: 'code', value: 'for (let i = 0; i < 5; i++) {\n  console.log(i);\n}\n// prints: 0, 1, 2, 3, 4' },
+            { type: 'text', value: 'A for loop has three parts, separated by semicolons: the starting point (let i = 0), the condition to keep looping (i < 5), and what happens after each pass (i++). The loop stops as soon as the condition becomes false.' },
+            { type: 'heading', value: 'Looping Through an Array with for' },
+            { type: 'code', value: 'let fruits = ["apple", "banana", "cherry"];\n\nfor (let i = 0; i < fruits.length; i++) {\n  console.log(fruits[i]);\n}' },
+            { type: 'heading', value: 'The while Loop' },
+            { type: 'code', value: 'let count = 0;\n\nwhile (count < 3) {\n  console.log("Count is " + count);\n  count++;\n}' },
+            { type: 'text', value: 'A while loop keeps running as long as its condition stays true. It checks the condition first — if it starts out false, the loop body never runs at all. Always make sure something inside the loop eventually makes the condition false, or you will get an infinite loop that freezes the page.' },
+            { type: 'heading', value: 'break and continue' },
+            { type: 'code', value: 'for (let i = 0; i < 10; i++) {\n  if (i === 5) break;    // stop the loop entirely\n  if (i % 2 === 0) continue; // skip to the next iteration\n  console.log(i); // prints: 1, 3\n}' }
+          ],
+          quiz: [
+            { question: 'What are the three parts of a for loop, separated by semicolons?', options: ['Start, middle, end', 'Initialization, condition, increment/decrement', 'Array, index, value', 'Name, type, value'], correct: 1, explanation: 'A for loop has: initialization (starting point), a condition (when to keep going), and an update step (like i++) run after each pass.' },
+            { question: 'What happens if a while loop\'s condition is false from the very start?', options: ['It runs once anyway', 'The loop body never runs', 'It throws an error', 'It runs forever'], correct: 1, explanation: 'A while loop checks its condition before each pass, including the first one. If it is false immediately, the loop body is skipped entirely.' },
+            { question: 'What does break do inside a loop?', options: ['Skips to the next iteration', 'Stops the loop completely', 'Pauses the loop for 1 second', 'Restarts the loop from zero'], correct: 1, explanation: 'break immediately exits the loop entirely, and no further iterations run.' },
+            { question: 'What does continue do inside a loop?', options: ['Stops the loop', 'Skips the rest of the current iteration and moves to the next one', 'Restarts the whole program', 'Deletes the loop variable'], correct: 1, explanation: 'continue skips the remaining code in the current pass and jumps straight to the next iteration of the loop.' }
+          ]
+        },
+        {
+          id: 'js-beg-09',
+          title: 'Functions',
+          summary: 'Package reusable blocks of code',
+          content: [
+            { type: 'text', value: 'A function is a reusable block of code that performs a task. Instead of repeating the same logic everywhere, you write it once as a function and call it whenever you need it.' },
+            { type: 'heading', value: 'Function Declaration' },
+            { type: 'code', value: 'function greet(name) {\n  return "Hello, " + name + "!";\n}\n\nconsole.log(greet("Amara")); // "Hello, Amara!"\nconsole.log(greet("Kal"));   // "Hello, Kal!"' },
+            { type: 'text', value: 'name here is a parameter — a placeholder for whatever value gets passed in when the function is called. "Amara" and "Kal" are arguments — the actual values supplied at call time.' },
+            { type: 'heading', value: 'The return Keyword' },
+            { type: 'text', value: 'return sends a value back out of the function, and immediately stops the function from running any further. A function without a return statement returns undefined.' },
+            { type: 'code', value: 'function add(a, b) {\n  return a + b;\n}\n\nlet total = add(3, 4);\nconsole.log(total); // 7' },
+            { type: 'heading', value: 'Default Parameters' },
+            { type: 'code', value: 'function greet(name = "friend") {\n  return "Hello, " + name + "!";\n}\n\nconsole.log(greet());        // "Hello, friend!"\nconsole.log(greet("Amara")); // "Hello, Amara!"' },
+            { type: 'heading', value: 'Arrow Functions' },
+            { type: 'code', value: '// Traditional function\nfunction add(a, b) {\n  return a + b;\n}\n\n// Arrow function — shorter syntax, same result\nconst add2 = (a, b) => {\n  return a + b;\n};\n\n// Arrow function with implicit return (one-line body)\nconst add3 = (a, b) => a + b;\n\nconsole.log(add3(3, 4)); // 7' },
+            { type: 'text', value: 'Arrow functions are a shorter way to write functions, common in modern JavaScript. When the function body is a single expression, you can drop the curly braces and the return keyword — the result is returned automatically.' }
+          ],
+          quiz: [
+            { question: 'What is the difference between a parameter and an argument?', options: ['They are the same thing', 'A parameter is the placeholder in the function definition; an argument is the actual value passed in', 'An argument is only used in arrow functions', 'A parameter must always be a number'], correct: 1, explanation: 'Parameters are named placeholders listed in the function definition. Arguments are the real values you pass in when calling the function.' },
+            { question: 'What does the return keyword do?', options: ['Prints a value to the console', 'Sends a value back and stops the function', 'Restarts the function', 'Deletes the function'], correct: 1, explanation: 'return sends a value out of the function and immediately ends the function\'s execution — code after return does not run.' },
+            { question: 'What does a function return if it has no return statement?', options: ['0', 'An empty string', 'undefined', 'An error'], correct: 2, explanation: 'A function without an explicit return statement automatically returns undefined.' },
+            { question: 'What is the shortest way to write an arrow function that just returns a + b?', options: ['(a, b) => a + b', 'function(a, b) => a + b', '(a, b) { return a + b }', 'arrow(a, b) return a + b'], correct: 0, explanation: 'When an arrow function\'s body is a single expression, you can omit the curly braces and return keyword: (a, b) => a + b returns the sum automatically.' }
+          ]
+        },
+        {
+          id: 'js-beg-10',
+          title: 'Objects',
+          summary: 'Group related data together with key-value pairs',
+          content: [
+            { type: 'text', value: 'An object stores data as key-value pairs, letting you group related information together — much closer to how we think about real-world things than a plain list.' },
+            { type: 'heading', value: 'Creating an Object' },
+            { type: 'code', value: 'const person = {\n  name: "Amara",\n  age: 25,\n  isStudent: true\n};' },
+            { type: 'text', value: 'Each name: value pair is called a property. name, age, and isStudent are the keys; "Amara", 25, and true are their values.' },
+            { type: 'heading', value: 'Accessing Properties' },
+            { type: 'code', value: 'console.log(person.name);      // dot notation → "Amara"\nconsole.log(person["age"]);    // bracket notation → 25' },
+            { type: 'text', value: 'Dot notation (person.name) is the most common and readable way to access a property. Bracket notation (person["name"]) is required when the property name is stored in a variable or contains spaces.' },
+            { type: 'heading', value: 'Updating and Adding Properties' },
+            { type: 'code', value: 'person.age = 26;              // update an existing property\nperson.city = "Dessie";       // add a brand new property\n\nconsole.log(person);\n// { name: "Amara", age: 26, isStudent: true, city: "Dessie" }' },
+            { type: 'heading', value: 'Objects with Methods' },
+            { type: 'code', value: 'const person = {\n  name: "Amara",\n  greet: function() {\n    return "Hi, I am " + this.name;\n  }\n};\n\nconsole.log(person.greet()); // "Hi, I am Amara"' },
+            { type: 'text', value: 'A function stored as a property is called a method. this inside a method refers to the object the method belongs to — here, this.name means "the name property of this object".' }
+          ],
+          quiz: [
+            { question: 'What is each name: value pair inside an object called?', options: ['A method', 'A property', 'An index', 'An argument'], correct: 1, explanation: 'Each key-value pair in an object is called a property, like name: "Amara" or age: 25.' },
+            { question: 'Which notation is required when a property name is stored in a variable?', options: ['Dot notation', 'Bracket notation', 'Arrow notation', 'Parentheses'], correct: 1, explanation: 'Bracket notation, like person[variableName], lets you access a property using a dynamic value instead of a hardcoded name.' },
+            { question: 'What is a function stored as an object property called?', options: ['A property', 'A method', 'A parameter', 'An argument'], correct: 1, explanation: 'When a function is stored as a property of an object, it is called a method — like person.greet() above.' },
+            { question: 'What does this refer to inside an object\'s method?', options: ['The global window object always', 'The object the method belongs to', 'The function\'s parameters', 'Nothing — this is not valid in methods'], correct: 1, explanation: 'Inside a method, this refers to the object that method was called on, letting you access that object\'s own properties.' }
+          ]
+        }
+      ],
+      exam: [
+        { question: 'What does JavaScript primarily add to a webpage?', options: ['Structure', 'Visual style', 'Interactive behavior', 'Search ranking'], correct: 2 },
+        { question: 'What does console.log() do?', options: ['Deletes a variable', 'Prints a value to the console', 'Creates a webpage', 'Saves data permanently'], correct: 1 },
+        { question: 'Which keyword should you use by default for a value that will not be reassigned?', options: ['var', 'let', 'const', 'static'], correct: 2 },
+        { question: 'What happens if you reassign a const variable?', options: ['It works fine', 'JavaScript throws an error', 'It is ignored silently', 'It becomes a let'], correct: 1 },
+        { question: 'What does typeof null return?', options: ['"null"', '"undefined"', '"object"', '"boolean"'], correct: 2 },
+        { question: 'What is the difference between null and undefined?', options: ['They are identical', 'undefined means never assigned; null is intentionally empty', 'null is only for numbers', 'undefined is newer'], correct: 1 },
+        { question: 'Why is === preferred over ==?', options: ['It is shorter', 'It checks value and type, avoiding surprises', 'It only works with strings', 'It is always faster'], correct: 1 },
+        { question: 'What does the % operator return?', options: ['A percentage', 'The remainder of division', 'A rounded value', 'An exponent'], correct: 1 },
+        { question: 'What wraps a template literal?', options: ['Single quotes', 'Double quotes', 'Backticks', 'Square brackets'], correct: 2 },
+        { question: 'What does ${} do inside a template literal?', options: ['Adds a comment', 'Evaluates JS and inserts the result', 'Creates a variable', 'Escapes text'], correct: 1 },
+        { question: 'Which value is falsy in JavaScript?', options: ['"0" (string)', '1', '"" (empty string)', '"false" (string)'], correct: 2 },
+        { question: 'What happens without break in a switch case?', options: ['A syntax error', 'Fall-through into the next case', 'The switch stops', 'Nothing changes'], correct: 1 },
+        { question: 'What position is the first item in an array?', options: ['1', '0', '-1', 'first'], correct: 1 },
+        { question: 'Which method adds an item to the end of an array?', options: ['.pop()', '.push()', '.shift()', '.unshift()'], correct: 1 },
+        { question: 'What are the three parts of a for loop?', options: ['Start, middle, end', 'Initialization, condition, update', 'Array, index, value', 'Name, type, value'], correct: 1 },
+        { question: 'What does break do inside a loop?', options: ['Skips to next iteration', 'Stops the loop completely', 'Pauses for 1 second', 'Restarts from zero'], correct: 1 },
+        { question: 'What is the difference between a parameter and an argument?', options: ['Same thing', 'Parameter is the placeholder; argument is the real value passed in', 'Argument is only for arrows', 'Parameter must be a number'], correct: 1 },
+        { question: 'What does a function return with no return statement?', options: ['0', 'Empty string', 'undefined', 'An error'], correct: 2 },
+        { question: 'What is each name: value pair in an object called?', options: ['A method', 'A property', 'An index', 'An argument'], correct: 1 },
+        { question: 'What does this refer to inside an object method?', options: ['The window object always', 'The object the method belongs to', 'The function parameters', 'Nothing'], correct: 1 }
+      ]
+    }
   }
-
-};
-
+ };
 // ─── Helper Functions ─────────────────────────────────
 function getSubject(id) {
   return SUBJECTS.find(s => s.id === id);
