@@ -1,3 +1,5 @@
+// lessons.js — all course content for Trace Code
+
 const SUBJECTS = [
   { id: 'html', name: 'HTML', icon: '🌐', description: 'Structure of the web' },
   { id: 'css', name: 'CSS', icon: '🎨', description: 'Style and layout' },
@@ -1074,8 +1076,7 @@ const COURSES = {
       ]
     }
   },
-
-javascript: {
+  javascript: {
     beginner: {
       lessons: [
         {
@@ -1343,23 +1344,281 @@ javascript: {
       ]
     }
   }
- };
-// ─── Helper Functions ─────────────────────────────────
-function getSubject(id) {
-  return SUBJECTS.find(s => s.id === id);
-}
+,
+  python: {
+    beginner: {
+      lessons: [
+        {
+          id: 'py-beg-01',
+          title: 'What is Python?',
+          summary: 'Run your first line of Python code',
+          content: [
+            { type: 'text', value: 'Python is a general-purpose programming language known for clean, readable syntax. It powers websites, data science, automation scripts, and AI — and it is one of the most beginner-friendly languages to start with.' },
+            { type: 'heading', value: 'Your First Line of Python' },
+            { type: 'code', value: 'print("Hello, World!")' },
+            { type: 'text', value: 'print() displays a value on the screen. Unlike some languages, Python does not need a semicolon at the end of a line, and it does not need a main() function to get started — this one line is a complete, runnable program.' },
+            { type: 'heading', value: 'Indentation Matters' },
+            { type: 'text', value: 'Python uses indentation (spaces at the start of a line) to group code together, instead of curly braces like many other languages. Getting indentation wrong is one of the most common beginner errors — it will cause an IndentationError.' },
+            { type: 'code', value: 'if True:\n    print("This line is indented — it belongs to the if")\nprint("This line is not indented — it always runs")' },
+            { type: 'heading', value: 'Comments' },
+            { type: 'code', value: '# This is a single-line comment — Python ignores it\n\n"""\nThis is a multi-line comment,\ntechnically a string Python does not use,\noften used for documentation.\n"""\n\nprint("Only this line actually runs") # comments can follow code too' },
+            { type: 'text', value: 'Try it yourself: change "Hello, World!" to your own name and run the script again — that one small edit is the fastest way to confirm you understand how print() works.' }
+          ],
+          quiz: [
+            { question: 'Which function displays output on the screen in Python?', options: ['echo()', 'print()', 'display()', 'show()'], correct: 1, explanation: 'print() outputs a value to the screen. It is the most commonly used function while learning and debugging Python.' },
+            { question: 'How does Python group lines of code together, like inside an if statement?', options: ['Curly braces {}', 'Semicolons', 'Indentation (spaces)', 'Parentheses'], correct: 2, explanation: 'Python uses indentation instead of curly braces to define code blocks. Consistent spacing is required or Python raises an IndentationError.' },
+            { question: 'Which symbol starts a single-line comment in Python?', options: ['//', '#', '<!--', '/*'], correct: 1, explanation: 'A single-line comment in Python starts with #. Everything after it on that line is ignored by Python.' }
+          ]
+        },
+        {
+          id: 'py-beg-02',
+          title: 'Variables and Data Types',
+          summary: 'Store values and learn Python\'s core types',
+          content: [
+            { type: 'text', value: 'A variable is a name that points to a value. Python figures out the type automatically — you never have to declare it yourself.' },
+            { type: 'heading', value: 'Creating Variables' },
+            { type: 'code', value: 'name = "Amara"\nage = 25\nheight = 1.65\nis_student = True\n\nprint(name)   # Amara\nprint(age)    # 25' },
+            { type: 'text', value: 'Notice there is no let, const, or var keyword — just name = value. Python variable names use snake_case by convention: lowercase words separated by underscores.' },
+            { type: 'heading', value: 'The Core Data Types' },
+            { type: 'code', value: 'name = "Amara"        # str    — text\nage = 25              # int    — whole numbers\nheight = 1.65         # float  — decimal numbers\nis_student = True     # bool   — True or False\nnothing = None        # NoneType — intentionally empty' },
+            { type: 'heading', value: 'Checking a Type with type()' },
+            { type: 'code', value: 'print(type("Amara"))  # <class \'str\'>\nprint(type(25))       # <class \'int\'>\nprint(type(1.65))     # <class \'float\'>\nprint(type(True))     # <class \'bool\'>' },
+            { type: 'heading', value: 'Python is Dynamically Typed' },
+            { type: 'text', value: 'A variable can hold a different type of value later on — Python does not lock a variable to one type the way some languages do.' },
+            { type: 'code', value: 'x = 5        # x is an int\nprint(type(x)) # <class \'int\'>\n\nx = "five"   # now x is a str — this is completely legal\nprint(type(x)) # <class \'str\'>' }
+          ],
+          quiz: [
+            { question: 'Which keyword is required to declare a variable in Python?', options: ['let', 'var', 'const', 'No keyword is needed'], correct: 3, explanation: 'Python does not use a keyword to declare variables — you simply write name = value and Python creates the variable.' },
+            { question: 'What naming convention does Python use for variables?', options: ['camelCase', 'PascalCase', 'snake_case', 'kebab-case'], correct: 2, explanation: 'Python convention (PEP 8) uses snake_case for variable names: lowercase words separated by underscores, like first_name.' },
+            { question: 'Which function tells you the type of a value?', options: ['typeof()', 'type()', 'kind()', 'class()'], correct: 1, explanation: 'type() returns the data type of a value, like <class \'int\'> or <class \'str\'>.' },
+            { question: 'Can a Python variable change its type after being created?', options: ['No, never', 'Yes — Python is dynamically typed', 'Only for numbers', 'Only with a special keyword'], correct: 1, explanation: 'Python is dynamically typed, meaning the same variable can be reassigned to hold a completely different type of value later on.' }
+          ]
+        },
+        {
+          id: 'py-beg-03',
+          title: 'Numbers and Operators',
+          summary: 'Do math and understand int vs float',
+          content: [
+            { type: 'text', value: 'Python has two main numeric types: int (whole numbers) and float (decimal numbers). Arithmetic operators work as you would expect, with a couple of Python-specific twists.' },
+            { type: 'heading', value: 'Arithmetic Operators' },
+            { type: 'code', value: 'print(5 + 3)   # 8   addition\nprint(5 - 3)   # 2   subtraction\nprint(5 * 3)   # 15  multiplication\nprint(5 / 3)   # 1.666...  division — always returns a float\nprint(5 // 3)  # 1   floor division — rounds down to the nearest whole number\nprint(5 % 3)   # 2   modulo — the remainder\nprint(5 ** 2)  # 25  exponent — 5 squared' },
+            { type: 'text', value: 'Notice / always returns a float, even if the numbers divide evenly (6 / 3 gives 2.0, not 2). Use // (floor division) when you specifically want a whole number result.' },
+            { type: 'heading', value: 'Mixing int and float' },
+            { type: 'code', value: 'result = 5 + 2.5\nprint(result)       # 7.5\nprint(type(result)) # <class \'float\'> — mixing int and float always gives a float' },
+            { type: 'heading', value: 'Assignment Shortcuts' },
+            { type: 'code', value: 'score = 10\nscore += 5   # same as: score = score + 5  → 15\nscore -= 3   # same as: score = score - 3  → 12\nscore *= 2   # same as: score = score * 2  → 24' },
+            { type: 'heading', value: 'Comparison Operators' },
+            { type: 'code', value: 'print(5 == 5)   # True\nprint(5 != 3)   # True\nprint(5 > 3)    # True\nprint(5 <= 5)   # True' }
+          ],
+          quiz: [
+            { question: 'What does the / operator always return in Python?', options: ['An int', 'A float', 'A string', 'A boolean'], correct: 1, explanation: 'The / (division) operator always returns a float in Python, even when the result is a whole number, like 6 / 3 == 2.0.' },
+            { question: 'Which operator performs floor (whole-number) division?', options: ['/', '//', '%', '**'], correct: 1, explanation: '// performs floor division, rounding the result down to the nearest whole number: 5 // 3 gives 1.' },
+            { question: 'What does 5 % 3 return?', options: ['1.66', '2', '1', '15'], correct: 1, explanation: 'The modulo operator (%) returns the remainder of division. 3 goes into 5 once, leaving a remainder of 2.' },
+            { question: 'What type results from adding an int and a float together?', options: ['int', 'float', 'str', 'It causes an error'], correct: 1, explanation: 'Whenever an int and a float are combined in arithmetic, Python promotes the result to a float.' }
+          ]
+        },
+        {
+          id: 'py-beg-04',
+          title: 'Strings',
+          summary: 'Work with text using Python\'s string tools',
+          content: [
+            { type: 'text', value: 'Strings hold text. Python gives you flexible ways to build and manipulate them.' },
+            { type: 'heading', value: 'Creating Strings' },
+            { type: 'code', value: "name = 'Amara'\ngreeting = \"Hello there\"\nmulti_line = '''This string\ncan span\nmultiple lines'''" },
+            { type: 'heading', value: 'f-Strings (the Modern Way to Combine Text)' },
+            { type: 'code', value: 'name = "Amara"\nage = 25\n\nmessage = f"Hello, {name}! You are {age} years old."\nprint(message)' },
+            { type: 'text', value: 'An f-string starts with the letter f before the opening quote. Anything inside curly braces {} is evaluated as Python and inserted directly into the string — the cleanest way to combine text and variables.' },
+            { type: 'heading', value: 'String Concatenation (the Old Way)' },
+            { type: 'code', value: 'name = "Amara"\nmessage = "Hello, " + name + "!"\nprint(message)' },
+            { type: 'heading', value: 'Useful String Methods' },
+            { type: 'code', value: 'text = "  Hello, World!  "\n\nprint(len(text))          # 19 — number of characters\nprint(text.strip())       # "Hello, World!" — removes outer spaces\nprint(text.upper())       # "  HELLO, WORLD!  "\nprint(text.lower())       # "  hello, world!  "\nprint("World" in text)    # True — checks if text contains a substring\nprint(text.strip().replace("World", "Python")) # "Hello, Python!"' },
+            { type: 'heading', value: 'Slicing Strings' },
+            { type: 'code', value: 'word = "Python"\nprint(word[0])     # "P" — first character (index 0)\nprint(word[0:3])   # "Pyt" — characters from index 0 up to (not including) 3\nprint(word[-1])    # "n" — last character' }
+          ],
+          quiz: [
+            { question: 'What letter goes before the quote to create an f-string?', options: ['s', 'f', 'r', 'b'], correct: 1, explanation: 'An f-string starts with f before the quotation mark, like f"Hello, {name}!", letting you embed expressions directly in the text.' },
+            { question: 'What does len("hello") return?', options: ['4', '5', '6', 'An error'], correct: 1, explanation: 'len() returns the number of characters in a string. "hello" has 5 characters.' },
+            { question: 'What does word[0] refer to in "Python"?', options: ['The last character', 'The first character', 'The whole string', 'An error, since indexing starts at 1'], correct: 1, explanation: 'Python strings are zero-indexed, so word[0] refers to the first character — "P" in "Python".' },
+            { question: 'What does the .strip() method do?', options: ['Deletes the string', 'Removes leading and trailing whitespace', 'Reverses the string', 'Converts to uppercase'], correct: 1, explanation: '.strip() removes whitespace from the start and end of a string, leaving the middle untouched.' }
+          ]
+        },
+        {
+          id: 'py-beg-05',
+          title: 'Lists',
+          summary: 'Store an ordered, changeable collection of items',
+          content: [
+            { type: 'text', value: 'A list stores multiple values in a single variable, in order. Lists are one of the most-used data structures in Python.' },
+            { type: 'heading', value: 'Creating and Accessing a List' },
+            { type: 'code', value: 'fruits = ["apple", "banana", "cherry"]\n\nprint(fruits[0])  # "apple" — first item\nprint(fruits[1])  # "banana"\nprint(len(fruits)) # 3' },
+            { type: 'text', value: 'Like strings, lists are zero-indexed — the first item is at position 0. Negative indexes count from the end: fruits[-1] gives the last item.' },
+            { type: 'heading', value: 'Modifying a List' },
+            { type: 'code', value: 'fruits = ["apple", "banana"]\n\nfruits.append("cherry")  # adds to the end → ["apple", "banana", "cherry"]\nfruits.remove("banana")  # removes by value → ["apple", "cherry"]\nfruits.insert(1, "mango") # inserts at a position → ["apple", "mango", "cherry"]\nfruits.pop()               # removes the last item → ["apple", "mango"]' },
+            { type: 'heading', value: 'Looping Over a List' },
+            { type: 'code', value: 'fruits = ["apple", "banana", "cherry"]\n\nfor fruit in fruits:\n    print(fruit)\n# prints: apple, banana, cherry — one per line' },
+            { type: 'heading', value: 'Slicing a List' },
+            { type: 'code', value: 'numbers = [10, 20, 30, 40, 50]\n\nprint(numbers[1:3])  # [20, 30] — items from index 1 up to (not including) 3\nprint(numbers[:2])   # [10, 20] — everything before index 2\nprint(numbers[2:])   # [30, 40, 50] — everything from index 2 onward' },
+            { type: 'heading', value: 'Checking Membership and Sorting' },
+            { type: 'code', value: 'numbers = [3, 1, 4, 1, 5]\n\nprint(4 in numbers)     # True\nprint(sorted(numbers))  # [1, 1, 3, 4, 5] — returns a new sorted list' }
+          ],
+          quiz: [
+            { question: 'What position is the first item in a list?', options: ['1', '0', '-1', 'first'], correct: 1, explanation: 'Python lists are zero-indexed — the first item is at index 0, just like strings.' },
+            { question: 'Which method adds an item to the end of a list?', options: ['.remove()', '.append()', '.insert()', '.pop()'], correct: 1, explanation: '.append() adds a single item to the end of a list. .insert() adds an item at a specific position instead.' },
+            { question: 'What does numbers[1:3] return from [10, 20, 30, 40]?', options: ['[10, 20, 30]', '[20, 30]', '[20, 30, 40]', '[10, 20]'], correct: 1, explanation: 'Slicing [1:3] returns items from index 1 up to but not including index 3 — that is indexes 1 and 2, giving [20, 30].' },
+            { question: 'What does fruits[-1] refer to?', options: ['The first item', 'An invalid index that errors', 'The last item', 'A random item'], correct: 2, explanation: 'Negative indexes count backward from the end of the list. -1 always refers to the last item.' }
+          ]
+        },
+        {
+          id: 'py-beg-06',
+          title: 'Conditionals: if, elif, else',
+          summary: 'Make decisions in your code',
+          content: [
+            { type: 'text', value: 'Conditionals let your program choose between different actions based on whether something is true or false.' },
+            { type: 'heading', value: 'if / else' },
+            { type: 'code', value: 'age = 20\n\nif age >= 18:\n    print("You can vote.")\nelse:\n    print("Too young to vote.")' },
+            { type: 'text', value: 'Notice the colon (:) after the condition, and that the code belonging to each branch is indented. This is how Python knows which lines belong to which branch.' },
+            { type: 'heading', value: 'elif for Multiple Conditions' },
+            { type: 'code', value: 'score = 75\n\nif score >= 90:\n    print("Grade: A")\nelif score >= 80:\n    print("Grade: B")\nelif score >= 70:\n    print("Grade: C")\nelse:\n    print("Grade: F")' },
+            { type: 'text', value: 'Python checks each condition top to bottom and runs the first one that is true, then skips the rest — even if a later condition would also match. elif is short for "else if".' },
+            { type: 'heading', value: 'Truthy and Falsy Values' },
+            { type: 'text', value: 'Python treats some values as automatically false when used in a condition: False, 0, 0.0, "" (empty string), [] (empty list), and None. Everything else counts as true.' },
+            { type: 'code', value: 'name = ""\n\nif name:\n    print(f"Hello, {name}")\nelse:\n    print("No name was given") # this runs — empty string is falsy' },
+            { type: 'heading', value: 'Combining Conditions' },
+            { type: 'code', value: 'age = 25\nhas_id = True\n\nif age >= 18 and has_id:\n    print("Entry allowed")\nelif age >= 18 or has_id:\n    print("Check further")\nelse:\n    print("Entry denied")' }
+          ],
+          quiz: [
+            { question: 'What must follow the condition in an if statement in Python?', options: ['A semicolon', 'A colon (:)', 'Curly braces', 'Nothing'], correct: 1, explanation: 'Python requires a colon (:) after the condition in if, elif, else, for, and while statements, followed by an indented block.' },
+            { question: 'What does elif mean?', options: ['"else if" — check another condition if the first was false', '"end if" — closes the if block', 'A loop keyword', 'A function name'], correct: 0, explanation: 'elif is short for "else if". It lets you check another condition only if the previous ones were false.' },
+            { question: 'Which of these values is falsy in Python?', options: ['[1, 2, 3]', '"0" (a string containing zero)', '[] (an empty list)', '"False" (a string)'], correct: 2, explanation: 'An empty list [] is falsy in Python. Non-empty lists and non-empty strings (even "0" or "False" as text) are truthy.' },
+            { question: 'How does Python know which lines belong to an if block?', options: ['Curly braces', 'Parentheses', 'Indentation', 'Semicolons'], correct: 2, explanation: 'Python uses indentation to define which lines belong to a block — there are no curly braces like in JavaScript.' }
+          ]
+        },
+        {
+          id: 'py-beg-07',
+          title: 'Loops: for and while',
+          summary: 'Repeat actions without repeating code',
+          content: [
+            { type: 'text', value: 'Loops repeat a block of code multiple times — essential for going through lists, counting, or repeating an action until a condition changes.' },
+            { type: 'heading', value: 'The for Loop with range()' },
+            { type: 'code', value: 'for i in range(5):\n    print(i)\n# prints: 0, 1, 2, 3, 4' },
+            { type: 'text', value: 'range(5) generates the numbers 0 through 4 — five numbers total, but it stops before reaching 5. range(2, 6) would generate 2, 3, 4, 5 instead.' },
+            { type: 'heading', value: 'Looping Through a List' },
+            { type: 'code', value: 'fruits = ["apple", "banana", "cherry"]\n\nfor fruit in fruits:\n    print(fruit)' },
+            { type: 'text', value: 'This is Python\'s most natural way to loop — for item in collection reads almost like plain English: "for each fruit in fruits, do this".' },
+            { type: 'heading', value: 'The while Loop' },
+            { type: 'code', value: 'count = 0\n\nwhile count < 3:\n    print(f"Count is {count}")\n    count += 1' },
+            { type: 'text', value: 'A while loop keeps running as long as its condition is true. Always make sure something inside the loop eventually makes the condition false, or you get an infinite loop that never stops.' },
+            { type: 'heading', value: 'break and continue' },
+            { type: 'code', value: 'for i in range(10):\n    if i == 5:\n        break       # stop the loop entirely\n    if i % 2 == 0:\n        continue    # skip to the next iteration\n    print(i) # prints: 1, 3' }
+          ],
+          quiz: [
+            { question: 'What numbers does range(5) generate?', options: ['1, 2, 3, 4, 5', '0, 1, 2, 3, 4', '0, 1, 2, 3, 4, 5', '1, 2, 3, 4'], correct: 1, explanation: 'range(5) generates five numbers starting at 0 and stopping before 5: 0, 1, 2, 3, 4.' },
+            { question: 'What is the most natural way to loop through a list in Python?', options: ['for i in range(len(list)):', 'for item in list:', 'while item in list:', 'loop item in list:'], correct: 1, explanation: 'for item in list: is the most readable and common way to loop through each element of a list directly.' },
+            { question: 'What happens if a while loop condition never becomes false?', options: ['The loop runs once', 'The loop stops automatically after 100 tries', 'The loop runs forever (an infinite loop)', 'Python throws an error immediately'], correct: 2, explanation: 'If nothing inside the loop makes the condition false, the while loop keeps running forever, freezing the program.' },
+            { question: 'What does continue do inside a loop?', options: ['Stops the loop completely', 'Skips the rest of the current iteration and moves to the next one', 'Restarts the loop from zero', 'Pauses execution'], correct: 1, explanation: 'continue skips the remaining code in the current pass of the loop and jumps to the next iteration.' }
+          ]
+        },
+        {
+          id: 'py-beg-08',
+          title: 'Functions',
+          summary: 'Package reusable blocks of code with def',
+          content: [
+            { type: 'text', value: 'A function is a reusable, named block of code. Instead of repeating the same logic, you define it once and call it whenever you need it.' },
+            { type: 'heading', value: 'Defining a Function' },
+            { type: 'code', value: 'def greet(name):\n    return f"Hello, {name}!"\n\nprint(greet("Amara")) # "Hello, Amara!"\nprint(greet("Kal"))   # "Hello, Kal!"' },
+            { type: 'text', value: 'def starts a function definition. name is a parameter — a placeholder for the value passed in when the function is called. "Amara" and "Kal" are the arguments — the actual values supplied.' },
+            { type: 'heading', value: 'The return Keyword' },
+            { type: 'code', value: 'def add(a, b):\n    return a + b\n\ntotal = add(3, 4)\nprint(total) # 7' },
+            { type: 'text', value: 'return sends a value back out of the function and stops it from running any further. A function with no return statement returns None automatically.' },
+            { type: 'heading', value: 'Default Parameter Values' },
+            { type: 'code', value: 'def greet(name="friend"):\n    return f"Hello, {name}!"\n\nprint(greet())        # "Hello, friend!"\nprint(greet("Amara")) # "Hello, Amara!"' },
+            { type: 'heading', value: 'Multiple Return Values' },
+            { type: 'code', value: 'def get_name_and_age():\n    return "Amara", 25\n\nname, age = get_name_and_age()\nprint(name) # "Amara"\nprint(age)  # 25' },
+            { type: 'text', value: 'Python functions can return more than one value at once, separated by commas — something many other languages cannot do directly.' }
+          ],
+          quiz: [
+            { question: 'Which keyword starts a function definition in Python?', options: ['function', 'def', 'func', 'define'], correct: 1, explanation: 'def is the keyword used to define a function in Python, followed by the function name and parentheses.' },
+            { question: 'What does a function return if it has no return statement?', options: ['0', 'An empty string', 'None', 'An error'], correct: 2, explanation: 'A Python function without an explicit return statement automatically returns None.' },
+            { question: 'What is the difference between a parameter and an argument?', options: ['They are the same', 'A parameter is the placeholder in the definition; an argument is the actual value passed in', 'An argument is only for default values', 'A parameter must be a string'], correct: 1, explanation: 'Parameters are named placeholders in the function definition. Arguments are the real values supplied when the function is called.' },
+            { question: 'Can a Python function return more than one value?', options: ['No, never', 'Yes, separated by commas', 'Only using a list', 'Only with a special import'], correct: 1, explanation: 'Python functions can return multiple values at once, separated by commas, like return name, age.' }
+          ]
+        },
+        {
+          id: 'py-beg-09',
+          title: 'Dictionaries',
+          summary: 'Store data as key-value pairs',
+          content: [
+            { type: 'text', value: 'A dictionary stores data as key-value pairs, letting you look up a value by a meaningful name instead of a numeric position.' },
+            { type: 'heading', value: 'Creating a Dictionary' },
+            { type: 'code', value: 'person = {\n    "name": "Amara",\n    "age": 25,\n    "is_student": True\n}' },
+            { type: 'text', value: 'Each "key": value pair is separated by a comma. Keys are usually strings, and values can be any type — even another list or dictionary.' },
+            { type: 'heading', value: 'Accessing and Updating Values' },
+            { type: 'code', value: 'print(person["name"])   # "Amara"\n\nperson["age"] = 26      # update an existing key\nperson["city"] = "Dessie" # add a brand new key\n\nprint(person)\n# {\'name\': \'Amara\', \'age\': 26, \'is_student\': True, \'city\': \'Dessie\'}' },
+            { type: 'heading', value: 'Avoiding Errors with .get()' },
+            { type: 'code', value: 'print(person["country"])       # KeyError! "country" does not exist\nprint(person.get("country"))   # None — no error, just returns nothing\nprint(person.get("country", "Unknown")) # "Unknown" — a custom fallback' },
+            { type: 'text', value: '.get() is safer than square-bracket access because it never crashes your program — if the key is missing, it returns None (or your chosen fallback) instead of raising an error.' },
+            { type: 'heading', value: 'Looping Through a Dictionary' },
+            { type: 'code', value: 'person = {"name": "Amara", "age": 25}\n\nfor key, value in person.items():\n    print(f"{key}: {value}")\n# prints: name: Amara\n#         age: 25' }
+          ],
+          quiz: [
+            { question: 'What are the two parts of each entry in a dictionary called?', options: ['Index and value', 'Key and value', 'Name and type', 'Parameter and argument'], correct: 1, explanation: 'Each entry in a dictionary is a key-value pair, like "name": "Amara", where "name" is the key and "Amara" is the value.' },
+            { question: 'What happens if you access a missing key with square brackets, like person["country"]?', options: ['It returns None', 'It returns an empty string', 'It raises a KeyError', 'It creates the key automatically'], correct: 2, explanation: 'Accessing a missing key with square brackets raises a KeyError. Use .get() instead if the key might not exist.' },
+            { question: 'What does person.get("country", "Unknown") do if "country" is not a key?', options: ['Raises an error', 'Returns None', 'Returns "Unknown"', 'Adds "country" to the dictionary'], correct: 2, explanation: '.get(key, fallback) returns the fallback value if the key does not exist, instead of raising an error.' },
+            { question: 'What does .items() give you when looping through a dictionary?', options: ['Only the keys', 'Only the values', 'Both the key and value together', 'The dictionary\'s length'], correct: 2, explanation: '.items() returns each key-value pair together, letting you loop with for key, value in dict.items():.' }
+          ]
+        },
+        {
+          id: 'py-beg-10',
+          title: 'User Input and f-Strings',
+          summary: 'Get input from the user and build dynamic output',
+          content: [
+            { type: 'text', value: 'Most useful programs need to react to what a user types. Python\'s input() function reads text typed into the console.' },
+            { type: 'heading', value: 'Getting Input' },
+            { type: 'code', value: 'name = input("What is your name? ")\nprint(f"Hello, {name}!")' },
+            { type: 'text', value: 'input() always returns a string, even if the user types a number. The text inside the parentheses is the prompt shown to the user before they type.' },
+            { type: 'heading', value: 'Converting Input to a Number' },
+            { type: 'code', value: 'age_text = input("How old are you? ")\nage = int(age_text)  # convert the string to an integer\n\nnext_year = age + 1\nprint(f"Next year you will be {next_year}.")' },
+            { type: 'text', value: 'Because input() always returns a string, trying to do math directly on it (age_text + 1) causes an error. Convert it first with int() or float().' },
+            { type: 'heading', value: 'Putting It Together' },
+            { type: 'code', value: 'name = input("What is your name? ")\nage = int(input("How old are you? "))\n\nif age >= 18:\n    print(f"Hi {name}, you are old enough to vote.")\nelse:\n    print(f"Hi {name}, you will be able to vote in {18 - age} years.")' },
+            { type: 'heading', value: 'Handling Bad Input' },
+            { type: 'code', value: 'age_text = input("How old are you? ")\n\ntry:\n    age = int(age_text)\n    print(f"You are {age} years old.")\nexcept ValueError:\n    print("That does not look like a valid number.")' },
+            { type: 'text', value: 'try/except catches errors instead of letting them crash the program. If int(age_text) fails because the user typed letters instead of digits, the except block runs instead of stopping the whole script.' }
+          ],
+          quiz: [
+            { question: 'What data type does input() always return?', options: ['int', 'float', 'str', 'bool'], correct: 2, explanation: 'input() always returns a string, no matter what the user types — even if they type digits, you get a string of characters.' },
+            { question: 'How do you convert a string like "25" into a usable integer?', options: ['str(25)', 'int("25")', 'float("25")', 'bool("25")'], correct: 1, explanation: 'int() converts a string containing digits into an integer. int("25") returns the number 25.' },
+            { question: 'What is the purpose of try/except?', options: ['To repeat code', 'To catch errors so they do not crash the program', 'To define a function', 'To create a loop'], correct: 1, explanation: 'try/except lets your program handle errors gracefully. If code inside try fails, the matching except block runs instead of crashing.' },
+            { question: 'What error occurs if you try int("hello")?', options: ['TypeError', 'ValueError', 'KeyError', 'IndexError'], correct: 1, explanation: 'int() raises a ValueError when the string cannot be converted to a number, like int("hello").' }
+          ]
+        }
+      ],
+      exam: [
+        { question: 'Which function displays output on the screen in Python?', options: ['echo()', 'print()', 'display()', 'show()'], correct: 1 },
+        { question: 'How does Python group lines of code together?', options: ['Curly braces', 'Semicolons', 'Indentation', 'Parentheses'], correct: 2 },
+        { question: 'Which keyword is required to declare a variable?', options: ['let', 'var', 'const', 'No keyword needed'], correct: 3 },
+        { question: 'What naming convention does Python use for variables?', options: ['camelCase', 'PascalCase', 'snake_case', 'kebab-case'], correct: 2 },
+        { question: 'What does the / operator always return?', options: ['An int', 'A float', 'A string', 'A boolean'], correct: 1 },
+        { question: 'Which operator performs floor division?', options: ['/', '//', '%', '**'], correct: 1 },
+        { question: 'What letter starts an f-string?', options: ['s', 'f', 'r', 'b'], correct: 1 },
+        { question: 'What does len("hello") return?', options: ['4', '5', '6', 'An error'], correct: 1 },
+        { question: 'What position is the first item in a list?', options: ['1', '0', '-1', 'first'], correct: 1 },
+        { question: 'Which method adds an item to the end of a list?', options: ['.remove()', '.append()', '.insert()', '.pop()'], correct: 1 },
+        { question: 'What must follow the condition in an if statement?', options: ['A semicolon', 'A colon', 'Curly braces', 'Nothing'], correct: 1 },
+        { question: 'What does elif mean?', options: ['"else if"', '"end if"', 'A loop keyword', 'A function name'], correct: 0 },
+        { question: 'What numbers does range(5) generate?', options: ['1-5', '0-4', '0-5', '1-4'], correct: 1 },
+        { question: 'What happens if a while condition never becomes false?', options: ['Runs once', 'Stops after 100 tries', 'Runs forever', 'Errors immediately'], correct: 2 },
+        { question: 'Which keyword starts a function definition?', options: ['function', 'def', 'func', 'define'], correct: 1 },
+        { question: 'What does a function return with no return statement?', options: ['0', 'Empty string', 'None', 'An error'], correct: 2 },
+        { question: 'What are the two parts of a dictionary entry called?', options: ['Index and value', 'Key and value', 'Name and type', 'Parameter and argument'], correct: 1 },
+        { question: 'What happens accessing a missing dictionary key with []?', options: ['Returns None', 'Returns empty string', 'Raises a KeyError', 'Creates the key'], correct: 2 },
+        { question: 'What data type does input() always return?', options: ['int', 'float', 'str', 'bool'], correct: 2 },
+        { question: 'What error occurs from int("hello")?', options: ['TypeError', 'ValueError', 'KeyError', 'IndexError'], correct: 1 }
+      ]
+    }
+  }
 
-function getLessons(subject, level) {
-  return COURSES[subject]?.[level]?.lessons || [];
-}
+};
 
-function getLesson(subject, level, lessonId) {
-  return getLessons(subject, level).find(l => l.id === lessonId);
-}
-
-function getExam(subject, level) {
-  return COURSES[subject]?.[level]?.exam || [];
-}
 // ─── Helper Functions ─────────────────────────────────
 function getSubject(id) {
   return SUBJECTS.find(s => s.id === id);
