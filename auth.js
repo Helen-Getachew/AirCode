@@ -58,6 +58,7 @@ function showLoginForm() {
   }
 });
   document.getElementById('go-signup').addEventListener('click', showSignupForm);
+  document.getElementById('btn-login').addEventListener('click', handleLogin);
   document.getElementById('input-password').addEventListener('keydown', e => {
     if (e.key === 'Enter') handleLogin();
   });
