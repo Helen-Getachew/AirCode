@@ -1,0 +1,11 @@
+{
+  "name": "AirCode",
+  "short_name": "AirCode",
+  "description": "Learn to code. Think like a computer.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#081426",
+  "theme_color": "#081426",
+  "orientation": "portrait",
+  "icons": []
+}
